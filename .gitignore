@@ -10,3 +10,4 @@ __pycache__/
 web/src/data/questionnaire.json
 dashboard/data/
 *.csv
+*.tsbuildinfo
