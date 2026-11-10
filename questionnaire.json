@@ -1,0 +1,656 @@
+{
+  "version": "1.0.0",
+  "title": "Assistentes de IA no Aprendizado de Programação",
+  "research_questions": [
+    {
+      "id": "QP1",
+      "text": "A frequência de uso de IA nos estudos se associa à confiança em programar sem IA?",
+      "test": "spearman",
+      "x": "Q6",
+      "y": "confianca"
+    },
+    {
+      "id": "QP2",
+      "text": "A dependência percebida da IA varia entre estudantes de períodos diferentes do curso (início, meio e fim)?",
+      "test": "kruskal",
+      "group": "Q3",
+      "y": "dependencia"
+    },
+    {
+      "id": "QP3",
+      "text": "Estudantes que usam IA principalmente para gerar código diferem, quanto à confiança, dos que a usam principalmente para tirar dúvidas e obter explicações?",
+      "test": "mannwhitney",
+      "group": "Q9",
+      "groups": [
+        "gerar_codigo",
+        "duvidas"
+      ],
+      "y": "confianca"
+    }
+  ],
+  "constructs": {
+    "confianca": {
+      "label": "Confiança percebida",
+      "items": [
+        "Q10",
+        "Q11",
+        "Q12",
+        "Q13"
+      ]
+    },
+    "dependencia": {
+      "label": "Dependência percebida",
+      "items": [
+        "Q14",
+        "Q15",
+        "Q16",
+        "Q17"
+      ]
+    }
+  },
+  "likert_scale": 5,
+  "min_duration_seconds": 60,
+  "order": [
+    "Q1",
+    "Q2",
+    "Q3",
+    "Q4",
+    "Q5",
+    "Q6",
+    "Q7",
+    "Q8",
+    "Q9",
+    "Q10",
+    "Q14",
+    "Q11",
+    "Q15",
+    "Q18",
+    "Q12",
+    "Q16",
+    "Q13",
+    "Q17",
+    "Q19"
+  ],
+  "items": [
+    {
+      "id": "Q1",
+      "text": "Você é estudante de graduação em computação ou área afim?",
+      "type": "single",
+      "rq": null,
+      "metric": "Filtro de elegibilidade",
+      "scale": "nominal",
+      "role": "screening",
+      "pass_value": "sim",
+      "options": [
+        {
+          "value": "sim",
+          "label": "Sim"
+        },
+        {
+          "value": "nao",
+          "label": "Não"
+        }
+      ],
+      "required": true,
+      "construct": null
+    },
+    {
+      "id": "Q2",
+      "text": "Você já usou assistentes de IA (ChatGPT, Copilot, Claude, Gemini etc.) para estudar programação?",
+      "type": "single",
+      "rq": null,
+      "metric": "Filtro de elegibilidade",
+      "scale": "nominal",
+      "role": "screening",
+      "pass_value": "sim",
+      "options": [
+        {
+          "value": "sim",
+          "label": "Sim"
+        },
+        {
+          "value": "nao",
+          "label": "Não"
+        }
+      ],
+      "required": true,
+      "construct": null
+    },
+    {
+      "id": "Q3",
+      "text": "Em que período do curso você está?",
+      "type": "single",
+      "rq": [
+        "QP2"
+      ],
+      "metric": "Período do curso",
+      "scale": "ordinal",
+      "role": "profile",
+      "options": [
+        {
+          "value": "1-4",
+          "label": "1º ao 4º período"
+        },
+        {
+          "value": "5-8",
+          "label": "5º ao 8º período"
+        },
+        {
+          "value": "9+",
+          "label": "9º período ou mais"
+        }
+      ],
+      "required": true,
+      "construct": null
+    },
+    {
+      "id": "Q4",
+      "text": "Você faz estágio ou trabalha na área de tecnologia?",
+      "type": "single",
+      "rq": null,
+      "metric": "Perfil (filtro)",
+      "scale": "nominal",
+      "role": "profile",
+      "options": [
+        {
+          "value": "sim",
+          "label": "Sim"
+        },
+        {
+          "value": "nao",
+          "label": "Não"
+        }
+      ],
+      "required": true,
+      "construct": null
+    },
+    {
+      "id": "Q5",
+      "text": "Há quanto tempo você programa?",
+      "type": "single",
+      "rq": null,
+      "metric": "Perfil (filtro)",
+      "scale": "ordinal",
+      "role": "profile",
+      "options": [
+        {
+          "value": "<1",
+          "label": "Menos de 1 ano"
+        },
+        {
+          "value": "1-2",
+          "label": "1 a 2 anos"
+        },
+        {
+          "value": "3-5",
+          "label": "3 a 5 anos"
+        },
+        {
+          "value": ">5",
+          "label": "Mais de 5 anos"
+        }
+      ],
+      "required": true,
+      "construct": null
+    },
+    {
+      "id": "Q6",
+      "text": "Com que frequência você usa IA nos seus estudos de programação?",
+      "type": "single",
+      "rq": [
+        "QP1"
+      ],
+      "metric": "Frequência de uso de IA",
+      "scale": "ordinal",
+      "role": "profile",
+      "options": [
+        {
+          "value": "raramente",
+          "label": "Raramente"
+        },
+        {
+          "value": "mensal",
+          "label": "Algumas vezes por mês"
+        },
+        {
+          "value": "semanal",
+          "label": "Toda semana"
+        },
+        {
+          "value": "quase_diario",
+          "label": "Quase todo dia"
+        },
+        {
+          "value": "diario",
+          "label": "Todo dia"
+        }
+      ],
+      "required": true,
+      "construct": null
+    },
+    {
+      "id": "Q7",
+      "text": "Quais ferramentas de IA você usa? Marque todas que se aplicam.",
+      "type": "multi",
+      "rq": null,
+      "metric": "Ferramentas usadas (descritivo)",
+      "scale": "nominal",
+      "role": "profile",
+      "options": [
+        {
+          "value": "chatgpt",
+          "label": "ChatGPT"
+        },
+        {
+          "value": "copilot",
+          "label": "Copilot"
+        },
+        {
+          "value": "claude",
+          "label": "Claude"
+        },
+        {
+          "value": "gemini",
+          "label": "Gemini"
+        },
+        {
+          "value": "outra",
+          "label": "Outra"
+        }
+      ],
+      "required": true,
+      "construct": null
+    },
+    {
+      "id": "Q8",
+      "text": "Seus professores permitem ou incentivam o uso de IA nas disciplinas?",
+      "type": "single",
+      "rq": null,
+      "metric": "Política docente (descritivo e filtro)",
+      "scale": "nominal",
+      "role": "profile",
+      "options": [
+        {
+          "value": "nao_permitem",
+          "label": "Não permitem"
+        },
+        {
+          "value": "restricoes",
+          "label": "Permitem com restrições"
+        },
+        {
+          "value": "incentivam",
+          "label": "Permitem ou incentivam"
+        },
+        {
+          "value": "varia",
+          "label": "Varia conforme a disciplina"
+        }
+      ],
+      "required": true,
+      "construct": null
+    },
+    {
+      "id": "Q9",
+      "text": "Para que você usa a IA com mais frequência nos estudos?",
+      "type": "single",
+      "rq": [
+        "QP3"
+      ],
+      "metric": "Principal uso de IA",
+      "scale": "nominal",
+      "role": "profile",
+      "options": [
+        {
+          "value": "gerar_codigo",
+          "label": "Gerar código pronto"
+        },
+        {
+          "value": "duvidas",
+          "label": "Tirar dúvidas e pedir explicações"
+        },
+        {
+          "value": "depurar",
+          "label": "Depurar erros"
+        },
+        {
+          "value": "outro",
+          "label": "Outro"
+        }
+      ],
+      "required": true,
+      "construct": null
+    },
+    {
+      "id": "Q10",
+      "text": "Resolvo um problema de programação do meu nível sem consultar IA.",
+      "type": "likert",
+      "rq": [
+        "QP1",
+        "QP3"
+      ],
+      "metric": "Escore médio de confiança percebida",
+      "scale": "ordinal",
+      "role": "measure",
+      "construct": "confianca",
+      "options": [
+        {
+          "value": 1,
+          "label": "Discordo totalmente"
+        },
+        {
+          "value": 2,
+          "label": "Discordo"
+        },
+        {
+          "value": 3,
+          "label": "Neutro"
+        },
+        {
+          "value": 4,
+          "label": "Concordo"
+        },
+        {
+          "value": 5,
+          "label": "Concordo totalmente"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "Q11",
+      "text": "Sinto-me seguro(a) para fazer uma prova de programação sem ajuda de ferramentas.",
+      "type": "likert",
+      "rq": [
+        "QP1",
+        "QP3"
+      ],
+      "metric": "Escore médio de confiança percebida",
+      "scale": "ordinal",
+      "role": "measure",
+      "construct": "confianca",
+      "options": [
+        {
+          "value": 1,
+          "label": "Discordo totalmente"
+        },
+        {
+          "value": 2,
+          "label": "Discordo"
+        },
+        {
+          "value": 3,
+          "label": "Neutro"
+        },
+        {
+          "value": 4,
+          "label": "Concordo"
+        },
+        {
+          "value": 5,
+          "label": "Concordo totalmente"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "Q12",
+      "text": "Consigo depurar meu próprio código sem pedir ajuda à IA.",
+      "type": "likert",
+      "rq": [
+        "QP1",
+        "QP3"
+      ],
+      "metric": "Escore médio de confiança percebida",
+      "scale": "ordinal",
+      "role": "measure",
+      "construct": "confianca",
+      "options": [
+        {
+          "value": 1,
+          "label": "Discordo totalmente"
+        },
+        {
+          "value": 2,
+          "label": "Discordo"
+        },
+        {
+          "value": 3,
+          "label": "Neutro"
+        },
+        {
+          "value": 4,
+          "label": "Concordo"
+        },
+        {
+          "value": 5,
+          "label": "Concordo totalmente"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "Q13",
+      "text": "Se a IA ficasse indisponível, eu conseguiria continuar estudando normalmente.",
+      "type": "likert",
+      "rq": [
+        "QP1",
+        "QP3"
+      ],
+      "metric": "Escore médio de confiança percebida",
+      "scale": "ordinal",
+      "role": "measure",
+      "construct": "confianca",
+      "options": [
+        {
+          "value": 1,
+          "label": "Discordo totalmente"
+        },
+        {
+          "value": 2,
+          "label": "Discordo"
+        },
+        {
+          "value": 3,
+          "label": "Neutro"
+        },
+        {
+          "value": 4,
+          "label": "Concordo"
+        },
+        {
+          "value": 5,
+          "label": "Concordo totalmente"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "Q14",
+      "text": "Quando travo em um exercício, recorro à IA antes de tentar sozinho(a).",
+      "type": "likert",
+      "rq": [
+        "QP2"
+      ],
+      "metric": "Escore médio de dependência percebida",
+      "scale": "ordinal",
+      "role": "measure",
+      "construct": "dependencia",
+      "options": [
+        {
+          "value": 1,
+          "label": "Discordo totalmente"
+        },
+        {
+          "value": 2,
+          "label": "Discordo"
+        },
+        {
+          "value": 3,
+          "label": "Neutro"
+        },
+        {
+          "value": 4,
+          "label": "Concordo"
+        },
+        {
+          "value": 5,
+          "label": "Concordo totalmente"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "Q15",
+      "text": "Sinto que teria dificuldade em estudar programação sem IA.",
+      "type": "likert",
+      "rq": [
+        "QP2"
+      ],
+      "metric": "Escore médio de dependência percebida",
+      "scale": "ordinal",
+      "role": "measure",
+      "construct": "dependencia",
+      "options": [
+        {
+          "value": 1,
+          "label": "Discordo totalmente"
+        },
+        {
+          "value": 2,
+          "label": "Discordo"
+        },
+        {
+          "value": 3,
+          "label": "Neutro"
+        },
+        {
+          "value": 4,
+          "label": "Concordo"
+        },
+        {
+          "value": 5,
+          "label": "Concordo totalmente"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "Q16",
+      "text": "Uso o código gerado pela IA sem entender completamente como ele funciona.",
+      "type": "likert",
+      "rq": [
+        "QP2"
+      ],
+      "metric": "Escore médio de dependência percebida",
+      "scale": "ordinal",
+      "role": "measure",
+      "construct": "dependencia",
+      "options": [
+        {
+          "value": 1,
+          "label": "Discordo totalmente"
+        },
+        {
+          "value": 2,
+          "label": "Discordo"
+        },
+        {
+          "value": 3,
+          "label": "Neutro"
+        },
+        {
+          "value": 4,
+          "label": "Concordo"
+        },
+        {
+          "value": 5,
+          "label": "Concordo totalmente"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "Q17",
+      "text": "Costumo tentar resolver sozinho(a) antes de pedir ajuda à IA.",
+      "type": "likert",
+      "rq": [
+        "QP2"
+      ],
+      "metric": "Escore médio de dependência percebida",
+      "scale": "ordinal",
+      "role": "measure",
+      "construct": "dependencia",
+      "options": [
+        {
+          "value": 1,
+          "label": "Discordo totalmente"
+        },
+        {
+          "value": 2,
+          "label": "Discordo"
+        },
+        {
+          "value": 3,
+          "label": "Neutro"
+        },
+        {
+          "value": 4,
+          "label": "Concordo"
+        },
+        {
+          "value": 5,
+          "label": "Concordo totalmente"
+        }
+      ],
+      "reverse": true,
+      "required": true
+    },
+    {
+      "id": "Q18",
+      "text": "Para esta questão, marque \"Discordo totalmente\".",
+      "type": "likert",
+      "rq": null,
+      "metric": "Verificação de atenção (descarte)",
+      "scale": "nominal",
+      "role": "attention",
+      "expected": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "Discordo totalmente"
+        },
+        {
+          "value": 2,
+          "label": "Discordo"
+        },
+        {
+          "value": 3,
+          "label": "Neutro"
+        },
+        {
+          "value": 4,
+          "label": "Concordo"
+        },
+        {
+          "value": 5,
+          "label": "Concordo totalmente"
+        }
+      ],
+      "required": true,
+      "construct": null
+    },
+    {
+      "id": "Q19",
+      "text": "Em uma frase, como a IA mudou sua forma de aprender a programar? (opcional; não inclua nomes ou dados que identifiquem você ou outras pessoas)",
+      "type": "open",
+      "rq": null,
+      "metric": "Complemento qualitativo",
+      "scale": "nominal",
+      "role": "open",
+      "required": false,
+      "max_length": 500,
+      "construct": null
+    }
+  ]
+}
