@@ -1,0 +1,185 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazilian]{babel}
+\usepackage[margin=2.1cm]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\setlist{itemsep=1pt, topsep=3pt, parsep=0pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.15}
+
+% Marcador para o que o grupo precisa preencher
+\newcommand{\todo}[1]{\textcolor{red}{[#1]}}
+
+\title{\textbf{Assistentes de IA no Aprendizado de Programação:\\
+Confiança e Dependência Percebidas por Estudantes de Computação}\\[4pt]
+\large Protocolo de Survey Pré-Registrado}
+\author{Bernardo de Resende, Flávio de Souza, João Marcelo Carvalho,\\
+Luidi Cadete, Miguel Figueiredo\\[4pt]
+Medição e Experimentação em Engenharia de Software -- 2º/2026}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Objetivo e questões de pesquisa}
+
+\textbf{Objetivo (template GQM).}
+\textbf{Analisar} o uso de assistentes de IA generativa (ex.: ChatGPT, Copilot, Claude, Gemini) nos estudos de programação
+\textbf{com o propósito de} caracterizar e investigar associações
+\textbf{com respeito à} confiança percebida em programar sem IA e à dependência percebida da ferramenta
+\textbf{do ponto de vista de} estudantes de graduação
+\textbf{no contexto de} cursos de computação e áreas afins de instituições brasileiras, no 2º semestre de 2026.
+
+\textbf{Questões de pesquisa.}
+\begin{itemize}
+  \item \textbf{QP1.} A frequência de uso de IA nos estudos se associa à confiança em programar sem IA?
+  \item \textbf{QP2.} A dependência percebida da IA varia entre estudantes de períodos diferentes do curso (início, meio e fim)?
+  \item \textbf{QP3.} Estudantes que usam IA principalmente para gerar código diferem, quanto à confiança em programar sem IA, dos que a usam principalmente para tirar dúvidas e obter explicações?
+\end{itemize}
+
+\textbf{Métricas.} Confiança percebida (escore médio dos itens Q10--Q13) e dependência percebida (escore médio dos itens Q14--Q17, com Q17 invertido), ambos em escala Likert de 5 pontos; frequência de uso (Q6); principal uso (Q9); período do curso (Q3).
+
+\section{População e amostragem}
+
+\textbf{População-alvo.} Estudantes de graduação em computação ou áreas afins que já usaram assistentes de IA para estudar programação.
+
+\textbf{Justificativa para usar estudantes.} O objetivo investiga o uso de IA no \emph{processo de aprendizagem}; portanto, a população-alvo são estudantes, e colegas de curso e de outras instituições compõem a amostra legítima, conforme a exceção prevista no enunciado.
+
+\textbf{Origem dos contatos e estratégia.} Amostragem \emph{não probabilística}, por conveniência e bola de neve. A divulgação ocorrerá por \textbf{WhatsApp} (grupos de turmas, de cursos e de comunidades de programação, além de mensagens diretas a contatos dos integrantes) e por \textbf{Instagram} (\emph{stories} e publicações dos integrantes, perfis de centros acadêmicos e de comunidades de computação, e mensagens diretas), sempre com pedido de repasse.
+
+\textbf{Tamanho de amostra e margem de erro.} Meta de 60 respostas e mínimo de \textbf{50 respostas válidas}. A margem de erro de uma proporção, com 95\% de confiança, é
+\[
+e = 1{,}96 \times \sqrt{\frac{p(1-p)}{n}}.
+\]
+No pior caso ($p = 0{,}5$), com $n = 50$ obtém-se $e \approx \pm 13{,}9$ pontos percentuais; com $n = 60$, $e \approx \pm 12{,}7$ p.p. Como a amostra é não probabilística, a margem é \emph{indicativa}: serve para limitar a precisão das conclusões, mas não permite generalizar para todos os estudantes do país.
+
+\section{Questionário com rastreabilidade}
+
+O instrumento será aplicado no Google Forms, sem coleta de e-mail e sem exigir login. Itens de concordância usam escala Likert de 5 pontos (1 = Discordo totalmente a 5 = Concordo totalmente). Os itens de confiança (Q10--Q13) e de dependência (Q14--Q17) são apresentados de forma alternada entre os dois construtos, e não em blocos separados. Os códigos Q1--Q19 são identificadores fixos de cada item, independentes da posição na tela, e são usados também nas colunas dos dados brutos.
+
+\textbf{Consentimento e filtros (encerram o formulário se a resposta for ``Não'').} Aceite do termo de consentimento; Q1 (é estudante de graduação em computação ou área afim?); Q2 (já usou IA para estudar programação?).
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}l X l >{\raggedright\arraybackslash}p{3.6cm}@{}}
+\toprule
+\textbf{Item} & \textbf{Pergunta / afirmação} & \textbf{Escala} & \textbf{Liga-se a} \\
+\midrule
+Q1 & É estudante de graduação em computação ou área afim? (sim / não) & Nominal & Filtro de elegibilidade \\
+Q2 & Já usou IA para estudar programação? (sim / não) & Nominal & Filtro de elegibilidade \\
+Q3 & Período do curso (1º--4º / 5º--8º / 9º ou mais) & Ordinal & QP2, filtro \\
+Q4 & Faz estágio ou trabalha na área? (sim / não) & Nominal & Filtro \\
+Q5 & Há quanto tempo programa? (faixas) & Ordinal & Filtro \\
+Q6 & Frequência de uso de IA nos estudos (5 níveis) & Ordinal & QP1 \\
+Q7 & Ferramentas usadas (múltipla escolha) & Nominal & Descritivo \\
+Q8 & Os professores permitem ou incentivam o uso de IA nas disciplinas? (não permitem / com restrições / permitem ou incentivam / varia conforme a disciplina) & Nominal & Descritivo e filtro (sem QP) \\
+Q9 & Principal uso (gerar código / dúvidas e explicações / depurar / outro) & Nominal & QP3 \\
+Q10 & Resolvo um problema do meu nível sem consultar IA. & Ordinal & QP1, QP3 \\
+Q11 & Sinto-me seguro(a) para uma prova de programação sem ferramentas. & Ordinal & QP1, QP3 \\
+Q12 & Consigo depurar meu código sem pedir ajuda à IA. & Ordinal & QP1, QP3 \\
+Q13 & Sem IA disponível, conseguiria continuar estudando normalmente. & Ordinal & QP1, QP3 \\
+Q14 & Quando travo, recorro à IA antes de tentar sozinho(a). & Ordinal & QP2 \\
+Q15 & Teria dificuldade em estudar programação sem IA. & Ordinal & QP2 \\
+Q16 & Uso código gerado pela IA sem entender completamente. & Ordinal & QP2 \\
+Q17 & Tento resolver sozinho(a) antes de pedir ajuda à IA (\emph{invertido}). & Ordinal & QP2 \\
+Q18 & Pergunta de atenção: ``Marque \emph{Discordo totalmente}''. & Nominal & Descarte \\
+Q19 & Como a IA mudou sua forma de aprender a programar? (aberta, opcional) & Texto & Complemento \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{Construtos.} \emph{Confiança percebida} (Q10--Q13) e \emph{dependência percebida} (Q14--Q17) são medidos por quatro itens cada, e a consistência interna de cada um será avaliada pelo alfa de Cronbach. O texto completo do questionário, com as opções de resposta de cada item, acompanha este protocolo no repositório do grupo (arquivo \texttt{questionario.md}).
+
+\section{Pré-teste}
+
+O questionário será aplicado a \textbf{3 estudantes de engenharia de software do 6º período,} antes da divulgação, com observação de dúvidas, tempo de resposta e ambiguidades.
+
+\begin{itemize}
+  \item \textbf{Data do pré-teste:} 10/11/2026.
+  \item \textbf{Tempo médio de resposta:} Cerca de 5 minutos.
+  \item \textbf{Mudanças feitas a partir do pré-teste:} remoção da pergunta sobre o tipo de instituição (pública ou privada), por não responder a nenhuma questão de pesquisa e para reduzir o risco de reidentificação; e inclusão da pergunta Q8, sobre a política dos professores quanto ao uso de IA, como contexto para interpretar a desejabilidade social.
+\end{itemize}
+
+As respostas do pré-teste não entram na amostra final.
+
+\section{Plano de análise}
+
+\textbf{Preparação dos dados.} Serão descartadas as respostas que (i) não marquem a opção esperada na pergunta de atenção Q18, (ii) não atendam aos filtros de elegibilidade, (iii) estejam incompletas nos itens obrigatórios ou (iv) sejam duplicadas evidentes. Cada descarte será registrado com o motivo. O item Q17 será invertido ($6 - x$) antes do cálculo dos escores.
+
+\textbf{Estatística descritiva.} Frequências e percentuais para variáveis nominais e ordinais; mediana e intervalo interquartil para escores; gráficos de barras divergentes para os itens Likert. Para QP2 e QP3, os níveis do fator serão comparados com a medida de tendência central de cada grupo. As variáveis Q4, Q5 e Q8 serão usadas de forma descritiva e como segmentos de filtro no painel.
+
+\textbf{Confiabilidade.} Alfa de Cronbach para cada construto; valores a partir de 0,70 serão considerados aceitáveis. Se um item reduzir muito o alfa, será reportada a análise com e sem ele.
+
+\textbf{Testes inferenciais} (nível de significância $\alpha = 0{,}05$; as escalas são ordinais, logo usam-se testes não paramétricos):
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}l X X X@{}}
+\toprule
+\textbf{QP} & \textbf{Teste} & \textbf{Tamanho de efeito} & \textbf{Observação} \\
+\midrule
+QP1 & Correlação de Spearman (Q6 $\times$ escore de confiança) & $\rho$ de Spearman & IC de 95\% por \emph{bootstrap} \\
+QP2 & Kruskal-Wallis (escore de dependência por grupo de Q3) & $\varepsilon^2$ & \emph{Post hoc}: Dunn \\
+QP3 & Mann-Whitney (escore de confiança por principal uso em Q9: gerar código $\times$ dúvidas/explicações) & $r$ de correlação bisserial por postos & Respostas ``depurar'' e ``outro'' ficam fora desta comparação \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{Múltiplas comparações.} Será aplicada a correção de Holm às três questões e aos testes \emph{post hoc}, e serão reportados tanto o p-valor bruto quanto o ajustado.
+
+\textbf{Margem de erro e interpretação.} A margem de erro será reportada junto aos resultados, e as conclusões descreverão \emph{associações}, nunca causalidade.
+
+\textbf{Respostas abertas (Q19).} Análise de conteúdo por codificação indutiva: dois integrantes codificam independentemente em categorias, discordâncias são resolvidas por consenso e a concordância inicial entre os codificadores é reportada em percentual. Trechos exibidos serão revisados para remover qualquer informação identificável.
+
+\section{Ética e LGPD}
+
+\begin{itemize}
+  \item \textbf{Consentimento.} A primeira página do formulário traz o termo de consentimento: objetivo acadêmico, tempo estimado, participação voluntária, anonimato e possibilidade de desistir a qualquer momento fechando a página. Sem o aceite, o formulário se encerra.
+  \item \textbf{Dados coletados.} Nenhum dado pessoal direto (nome, e-mail, matrícula, telefone, IP ou rede social). A coleta de e-mail e o login estão desativados. Variáveis de perfil são agrupadas em faixas e categorias para reduzir o risco de reidentificação, e não se pergunta o curso, a instituição nem a cidade do participante.
+  \item \textbf{Armazenamento.} Os dados brutos ficam em pasta de acesso restrito aos integrantes do grupo e ao professor, e \emph{não} são publicados no repositório do GitHub. Serão mantidos apenas até o fim da disciplina, 31/12/2026.
+  \item \textbf{Divulgação dos resultados.} Apenas de forma agregada. Evidências (capturas de tela) não exibirão dados pessoais, e nomes de quem compartilhar a divulgação serão ocultados.
+  \item \textbf{Normas institucionais.} O grupo seguirá todas as orientações da instituição para pesquisas com pessoas.
+\end{itemize}
+
+\section{Ameaças à validade}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}l X X@{}}
+\toprule
+\textbf{Ameaça} & \textbf{Descrição} & \textbf{Mitigação} \\
+\midrule
+Autosseleção e não resposta & Quem responde pode ter mais interesse ou opinião mais forte sobre IA. & Divulgar em canais variados; reportar o perfil da amostra e a limitação; não generalizar. \\
+Viés de canal / conveniência & A amostra reflete os grupos onde o link circula. & Usar vários canais e comparar o perfil por segmento. \\
+Desejabilidade social & Estudantes podem subestimar o uso de IA por receio de parecer que ``colam''. & Garantir e declarar o anonimato; usar linguagem neutra nos itens; registrar a política dos professores (Q8) para interpretar possível subnotificação. \\
+Autorrelato & Confiança e dependência são percebidas, não medem desempenho real. & Declarar como limitação; conclusões restritas a percepções. \\
+Respostas descuidadas & Marcações automáticas sem leitura. & Pergunta de atenção (Q18), itens alternados entre os construtos e item invertido (Q17). \\
+Validade de construto & Poucos itens podem não representar o construto. & Quatro itens por construto, pré-teste e alfa de Cronbach. \\
+Validade de conclusão & Amostra pequena e múltiplos testes aumentam falsos positivos. & Testes não paramétricos, tamanho de efeito, correção de Holm e margem de erro reportada. \\
+Causalidade & Survey observa associações, não causas. & Redação das conclusões e do objetivo sem termos causais. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Plano de divulgação}
+
+\begin{itemize}
+  \item \textbf{Canais:} \textbf{WhatsApp} (grupos de turmas, de cursos e de comunidades de programação; mensagens diretas) e \textbf{Instagram} (\emph{stories} e publicações dos integrantes, perfis de centros acadêmicos e de comunidades de computação, mensagens diretas). Cada integrante também repassa o link a conhecidos que estudam computação, com pedido de repasse (bola de neve).
+  \item \textbf{Mensagem padrão:} apresenta o grupo, o objetivo, o tempo (cerca de 5 minutos), o anonimato e o link.
+  \item \textbf{Período de coleta:} de 13/11/2026 a 23/11/2026, com reforços da divulgação em dias e horários diferentes.
+  \item \textbf{Registro:} capturas datadas da divulgação (sem dados pessoais) e exportação bruta do formulário com data e hora de cada resposta.
+  \item \textbf{Regra de início:} a divulgação só começa após a entrega deste protocolo, com data comprovada pelo histórico do repositório do grupo e pelo envio na plataforma da disciplina.
+\end{itemize}
+
+\end{document}
