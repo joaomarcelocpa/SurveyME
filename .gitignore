@@ -11,3 +11,4 @@ web/src/data/questionnaire.json
 dashboard/data/
 *.csv
 *.tsbuildinfo
+.vercel
