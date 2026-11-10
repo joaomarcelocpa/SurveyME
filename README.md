@@ -1,6 +1,6 @@
-# SurveyME
+# Assistentes de IA no Aprendizado de Programação: Confiança e Dependência Percebidas por Estudantes de Computação
 
-Trabalho prático de **Medição e Experimentação em Engenharia de Software** (PUC, 2º/2026).
+Trabalho prático de **Medição e Experimentação em Engenharia de Software**
 
 ## Sobre o trabalho
 
