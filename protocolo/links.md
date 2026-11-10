@@ -1,3 +1,0 @@
-- Link para responder: https://docs.google.com/forms/d/e/1FAIpQLSdeJRceFX19Kbg95GUTmXdrWZdFDkUiWDvt1Yy_I7
-- Editar o formulário: https://docs.google.com/forms/d/12B_bqjU4hEDM46dy1LTBgsixtrii8129m74Qm7Xjbsg/edit
-- Planilha de respostas: https://docs.google.com/spreadsheets/d/12zubXcKL5Zb9NdN1FaHBTpAk3fejoKcJu-RAynN3t9w/edit
