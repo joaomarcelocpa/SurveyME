@@ -1,27 +1,40 @@
 @import "tailwindcss";
 
+/* Claro (creme) e padrao */
 :root {
   --bg: #f5f0e4;
   --ink: #1d1b16;
-  --muted: #7a7365;
+  --muted: #6a6356;
   --line: #ddd4c1;
   --hover: #ece5d4;
   --accent: #9a5b00;
   --on-accent: #fffaf0;
   --danger: #a3341f;
+  color-scheme: light;
 }
 
+/* Escuro: preferencia do sistema (sem escolha manual) ou escolha manual */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #16151a;
-    --ink: #ece8df;
-    --muted: #8d8a93;
-    --line: #2b2a31;
-    --hover: #1f1e25;
-    --accent: #e3b04b;
-    --on-accent: #16151a;
-    --danger: #ff8a73;
+  :root:not([data-theme="light"]) {
+    --bg: #16151a; --ink: #ece8df; --muted: #8d8a93; --line: #2b2a31;
+    --hover: #1f1e25; --accent: #e3b04b; --on-accent: #16151a; --danger: #ff8a73;
+    color-scheme: dark;
   }
+}
+:root[data-theme="dark"] {
+  --bg: #16151a; --ink: #ece8df; --muted: #8d8a93; --line: #2b2a31;
+  --hover: #1f1e25; --accent: #e3b04b; --on-accent: #16151a; --danger: #ff8a73;
+  color-scheme: dark;
+}
+
+/* Alto contraste (claro e escuro) */
+:root[data-contrast="high"] {
+  --bg: #ffffff; --ink: #000000; --muted: #2b2b2b; --line: #000000;
+  --hover: #e6e6e6; --accent: #0033cc; --on-accent: #ffffff; --danger: #a00000;
+}
+:root[data-contrast="high"][data-theme="dark"] {
+  --bg: #000000; --ink: #ffffff; --muted: #e0e0e0; --line: #ffffff;
+  --hover: #262626; --accent: #ffe14d; --on-accent: #000000; --danger: #ff9d8a;
 }
 
 body {
@@ -30,18 +43,22 @@ body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
-@keyframes fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 .fade { animation: fade 0.18s ease-out both; }
 
-:where(button, a, textarea, input):focus-visible {
-  outline: 2px solid var(--accent);
+:where(button, a, textarea, input, fieldset, h1):focus-visible {
+  outline: 3px solid var(--accent);
   outline-offset: 3px;
 }
+:where(fieldset, h1)[tabindex="-1"]:focus { outline: none; }
+
+:root[data-contrast="high"] a { text-decoration: underline; }
 
 @media (prefers-reduced-motion: reduce) {
   .fade { animation: none; }
   * { transition: none !important; }
+}
+
+@media (forced-colors: active) {
+  :where(button, a, textarea, input):focus-visible { outline-color: Highlight; }
 }

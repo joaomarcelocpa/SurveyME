@@ -19,6 +19,9 @@ export default function Survey() {
   const [error, setError] = useState<string | null>(null);
   const [website, setWebsite] = useState(""); // honeypot
   const startedAt = useRef(0);
+  const focusRef = useRef<HTMLElement | null>(null);
+  const mounted = useRef(false);
+  const [notice, setNotice] = useState<string | null>(null);
 
   const item = itemsInOrder[step];
   const total = itemsInOrder.length;
@@ -32,9 +35,19 @@ export default function Survey() {
     return value !== undefined && value !== "";
   }, [item, value]);
 
+  // Leitor de tela: ao mudar de tela, leva o foco ao titulo e atualiza o titulo da aba.
+  useEffect(() => {
+    if (phase === "questions") document.title = `Pergunta ${step + 1} de ${total} · ${questionnaire.title}`;
+    else if (phase === "done") document.title = `Obrigado · ${questionnaire.title}`;
+    else document.title = questionnaire.title;
+    if (mounted.current) focusRef.current?.focus();
+    mounted.current = true;
+  }, [phase, step, total]);
+
   function set(id: string, v: Value) {
     setAnswers((a) => ({ ...a, [id]: v }));
     setError(null);
+    setNotice(null);
   }
 
   function toggle(it: Item, v: string | number) {
@@ -45,7 +58,11 @@ export default function Survey() {
   }
 
   async function next() {
-    if (!answered || phase !== "questions") return;
+    if (phase !== "questions") return;
+    if (!answered) {
+      setNotice(item.type === "multi" ? "Escolha ao menos uma opção para continuar." : "Escolha uma opção para continuar.");
+      return;
+    }
     if (item.role === "screening" && answers[item.id] !== item.pass_value) {
       setPhase("ineligible");
       return;
@@ -75,7 +92,7 @@ export default function Survey() {
     if (phase !== "questions" || !item) return;
     const onKey = (e: KeyboardEvent) => {
       if ((e.target as HTMLElement).tagName === "TEXTAREA" || e.metaKey || e.ctrlKey || e.altKey) return;
-      if (e.key === "Enter" && answered) {
+      if (e.key === "Enter" && (e.target as HTMLElement).tagName !== "BUTTON" && answered) {
         e.preventDefault();
         void next();
         return;
@@ -93,16 +110,16 @@ export default function Survey() {
 
   return (
     <>
-      <div className="fixed inset-x-0 top-0 z-10 h-[3px]" style={{ background: "var(--line)" }} role="progressbar" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100} aria-label="Progresso">
+      <div className="fixed inset-x-0 top-0 z-10 h-[3px]" style={{ background: "var(--line)" }} role="progressbar" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100} aria-valuetext={phase === "questions" || phase === "submitting" ? `Pergunta ${step + 1} de ${total}` : `${Math.round(progress)}%`} aria-label="Progresso">
         <div className="h-full transition-[width] duration-500" style={{ width: `${progress}%`, background: "var(--accent)" }} />
       </div>
 
-      <main className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col justify-center px-6 py-16 sm:px-8">
+      <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center px-6 py-10 sm:px-8">
         <div key={`${phase}-${step}`} className="fade">
           {phase === "consent" && (
             <div>
               <p className="text-sm" style={{ color: "var(--muted)" }}>Pesquisa acadêmica · cerca de 5 minutos</p>
-              <h1 className="mt-4 text-4xl font-medium leading-[1.1] tracking-tight sm:text-5xl">{questionnaire.title}</h1>
+              <h1 ref={(el) => { if (phase === "consent") focusRef.current = el; }} tabIndex={-1} className="mt-4 text-4xl font-medium leading-[1.1] tracking-tight sm:text-5xl">{questionnaire.title}</h1>
               <p className="mt-5 max-w-xl text-lg leading-relaxed" style={{ color: "var(--muted)" }}>
                 Queremos entender como estudantes de computação usam assistentes de IA nos estudos de programação.
               </p>
@@ -126,7 +143,7 @@ export default function Survey() {
               </dl>
 
               <label className="mt-8 flex cursor-pointer items-start gap-3">
-                <input type="checkbox" className="peer sr-only" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
+                <input type="checkbox" className="peer sr-only" checked={agreed} onChange={(e) => { setAgreed(e.target.checked); setNotice(null); }} />
                 <span
                   className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-[4px] border peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--accent)]"
                   style={{ borderColor: agreed ? "var(--accent)" : "var(--muted)", background: agreed ? "var(--accent)" : "transparent", color: "var(--on-accent)" }}
@@ -138,49 +155,57 @@ export default function Survey() {
               </label>
               <Honeypot value={website} onChange={setWebsite} />
               <button
-                className="mt-8 rounded-lg px-6 py-3 text-base font-medium transition-opacity disabled:cursor-not-allowed disabled:opacity-35"
-                style={{ background: "var(--ink)", color: "var(--bg)" }}
-                disabled={!agreed}
-                onClick={() => { startedAt.current = Date.now(); setPhase("questions"); }}
+                className="mt-8 rounded-lg px-6 py-3 text-base font-medium transition-opacity"
+                style={{ background: "var(--ink)", color: "var(--bg)", opacity: agreed ? 1 : 0.55 }}
+                aria-disabled={!agreed}
+                onClick={() => {
+                  if (!agreed) { setNotice("Marque a caixa de concordância para começar."); return; }
+                  startedAt.current = Date.now();
+                  setPhase("questions");
+                }}
               >
                 Começar
               </button>
+              {notice && <p role="alert" className="mt-4 text-sm" style={{ color: "var(--danger)" }}>{notice}</p>}
             </div>
           )}
 
           {(phase === "questions" || phase === "submitting") && item && (
             <div>
-              <p className="text-sm tabular-nums" style={{ color: "var(--muted)" }}>{step + 1} / {total}</p>
-              <fieldset className="mt-4">
-                <legend className="text-[1.65rem] font-medium leading-snug tracking-tight sm:text-3xl">{item.text}</legend>
+              <p aria-hidden className="text-sm tabular-nums" style={{ color: "var(--muted)" }}>{step + 1} / {total}</p>
+              <fieldset ref={(el) => { focusRef.current = el; }} tabIndex={-1} className="mt-4">
+                <legend className="text-[1.65rem] font-medium leading-snug tracking-tight sm:text-3xl">
+                  <span className="sr-only">Pergunta {step + 1} de {total}. {item.required ? "Resposta obrigatória. " : "Resposta opcional. "}</span>
+                  {item.text}
+                </legend>
                 {item.type === "multi" && <p className="mt-2 text-sm" style={{ color: "var(--muted)" }}>Escolha quantas quiser.</p>}
                 <Field item={item} value={value} onPick={(v) => toggle(item, v)} onText={(v) => set(item.id, v)} />
               </fieldset>
 
-              {error && <p role="alert" className="mt-5 text-sm" style={{ color: "var(--danger)" }}>{error}</p>}
+              {(error || notice) && <p role="alert" className="mt-5 text-sm" style={{ color: "var(--danger)" }}>{error ?? notice}</p>}
 
               <div className="mt-10 flex items-center gap-5">
                 <button
-                  className="rounded-lg px-6 py-3 text-base font-medium transition-opacity disabled:cursor-not-allowed disabled:opacity-35"
-                  style={{ background: "var(--ink)", color: "var(--bg)" }}
-                  disabled={!answered || phase === "submitting"}
-                  onClick={next}
+                  className="rounded-lg px-6 py-3 text-base font-medium transition-opacity"
+                  style={{ background: "var(--ink)", color: "var(--bg)", opacity: answered ? 1 : 0.55 }}
+                  aria-disabled={!answered || phase === "submitting"}
+                  onClick={() => { if (phase !== "submitting") void next(); }}
                 >
                   {phase === "submitting" ? "Enviando…" : step === total - 1 ? "Enviar respostas" : "Continuar"}
                 </button>
                 {step > 0 && (
-                  <button className="text-base underline-offset-4 hover:underline" style={{ color: "var(--muted)" }} disabled={phase === "submitting"} onClick={() => setStep(step - 1)}>
+                  <button className="min-h-11 px-2 text-base underline-offset-4 hover:underline" style={{ color: "var(--muted)" }} disabled={phase === "submitting"} onClick={() => setStep(step - 1)}>
                     Voltar
                   </button>
                 )}
-                <span className="ml-auto hidden text-sm sm:inline" style={{ color: "var(--muted)" }}>Enter ↵</span>
+                <span aria-hidden className="ml-auto hidden text-sm sm:inline" style={{ color: "var(--muted)" }}>Enter ↵</span>
               </div>
             </div>
           )}
 
           {phase === "ineligible" && (
             <div>
-              <h1 className="text-3xl font-medium leading-tight">Obrigado pelo interesse</h1>
+              <h1 ref={(el) => { if (phase === "ineligible") focusRef.current = el; }} tabIndex={-1} className="text-3xl font-medium leading-tight">Obrigado pelo interesse</h1>
               <p className="mt-4 max-w-xl text-lg leading-relaxed" style={{ color: "var(--muted)" }}>
                 Esta pesquisa é voltada a estudantes de graduação em computação ou áreas afins que já usaram IA para estudar programação. Nenhuma resposta foi registrada.
               </p>
@@ -189,7 +214,7 @@ export default function Survey() {
 
           {phase === "done" && (
             <div>
-              <h1 className="text-4xl font-medium leading-tight tracking-tight">Obrigado por participar.</h1>
+              <h1 ref={(el) => { if (phase === "done") focusRef.current = el; }} tabIndex={-1} className="text-4xl font-medium leading-tight tracking-tight">Obrigado por participar.</h1>
               <p className="mt-4 max-w-xl text-lg leading-relaxed" style={{ color: "var(--muted)" }}>
                 Sua resposta foi registrada de forma anônima. Se puder, compartilhe o link com colegas de computação: quanto mais respostas, mais confiáveis os resultados.
               </p>
@@ -218,15 +243,16 @@ function Field({ item, value, onPick, onText }: { item: Item; value: unknown; on
     return (
       <div className="mt-8">
         <textarea
-          className="w-full resize-none border-b bg-transparent py-2 text-lg leading-relaxed outline-none placeholder:opacity-50 focus:border-[var(--accent)]"
-          style={{ borderColor: "var(--line)" }}
+          className="w-full resize-none border-b-2 bg-transparent py-2 text-lg leading-relaxed outline-none placeholder:opacity-70 focus:border-[var(--accent)]"
+          style={{ borderColor: "var(--muted)" }}
+          aria-label={item.text}
           rows={4}
           maxLength={item.max_length}
           placeholder="Escreva aqui (opcional)"
           value={text}
           onChange={(e) => onText(e.target.value)}
         />
-        <p className="mt-1 text-right text-xs tabular-nums" style={{ color: "var(--muted)" }}>{text.length}/{item.max_length}</p>
+        <p aria-hidden className="mt-1 text-right text-sm tabular-nums" style={{ color: "var(--muted)" }}>{text.length}/{item.max_length}</p>
       </div>
     );
   }
@@ -245,6 +271,7 @@ function Field({ item, value, onPick, onText }: { item: Item; value: unknown; on
               style={{ borderColor: "var(--line)", color: on ? "var(--accent)" : "var(--ink)" }}
             >
               <span
+                aria-hidden
                 className="grid h-6 w-6 shrink-0 place-items-center rounded-[4px] border text-xs font-medium"
                 style={{ borderColor: on ? "var(--accent)" : "var(--line)", background: on ? "var(--accent)" : "transparent", color: on ? "var(--on-accent)" : "var(--muted)" }}
               >
