@@ -1,24 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #f6f7fb;
-  --card: #ffffff;
-  --ink: #1b1f3b;
-  --muted: #5b6080;
-  --brand: #4f46e5;
-  --brand-soft: #eef0ff;
-  --line: #e2e5f0;
+  --bg: #f5f0e4;
+  --ink: #1d1b16;
+  --muted: #7a7365;
+  --line: #ddd4c1;
+  --hover: #ece5d4;
+  --accent: #9a5b00;
+  --on-accent: #fffaf0;
+  --danger: #a3341f;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0f1224;
-    --card: #181c36;
-    --ink: #eceffd;
-    --muted: #9aa0c4;
-    --brand: #818cf8;
-    --brand-soft: #232850;
-    --line: #2b3060;
+    --bg: #16151a;
+    --ink: #ece8df;
+    --muted: #8d8a93;
+    --line: #2b2a31;
+    --hover: #1f1e25;
+    --accent: #e3b04b;
+    --on-accent: #16151a;
+    --danger: #ff8a73;
   }
 }
 
@@ -26,4 +28,20 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.fade { animation: fade 0.18s ease-out both; }
+
+:where(button, a, textarea, input):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade { animation: none; }
+  * { transition: none !important; }
 }
