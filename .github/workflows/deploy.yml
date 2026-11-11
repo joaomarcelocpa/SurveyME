@@ -1,0 +1,41 @@
+name: Deploy (Vercel)
+
+# Publica o site (pasta web/) na Vercel a cada push na main, ou manualmente em Actions > Run workflow.
+# Secrets necessarios no repositorio: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID.
+# As variaveis do site (DATABASE_URL, SURVEY_OPEN, ...) ficam no projeto da Vercel, nao aqui.
+on:
+  push:
+    branches: [main]
+    paths: ["web/**", "questionnaire.json", ".github/workflows/deploy.yml"]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-vercel
+  cancel-in-progress: false
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Testes do site
+        working-directory: web
+        run: |
+          npm ci
+          npm test
+          npx tsc --noEmit
+      - name: Instalar Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Baixar configuracao do projeto
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
