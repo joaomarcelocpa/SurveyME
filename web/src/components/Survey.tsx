@@ -140,7 +140,7 @@ export default function Survey() {
               <dl className="mt-3 border-t text-base leading-relaxed" style={{ borderColor: "var(--line)" }}>
                 {[
                   ["Finalidade", "Trabalho acadêmico da disciplina de Medição e Experimentação em Engenharia de Software, sobre o uso de IA no aprendizado de programação."],
-                  ["Anonimato", "Não coletamos nome, e-mail, IP nem qualquer dado que identifique você. Os resultados serão apresentados de forma agregada. Para evitar envios repetidos, guardamos um marcador no seu navegador e um contador temporário (até 24 horas) derivado da sua rede por um código irreversível; ele nunca é ligado às suas respostas e depois é apagado."],
+                  ["Anonimato", "Não coletamos nome, e-mail, IP nem qualquer dado que identifique você. Os resultados serão apresentados de forma agregada. Para evitar envios repetidos, guardamos apenas um marcador no seu próprio aparelho (cookie e armazenamento local do navegador), que não é ligado às suas respostas e não identifica você."],
                   ["Voluntariedade", "A participação é voluntária. Você pode desistir a qualquer momento fechando a página."],
                   ["Armazenamento", "As respostas ficam em um banco de dados com acesso restrito aos integrantes do grupo e ao professor, não são publicadas e serão mantidas até o fim da disciplina (31/12/2026)."],
                   ["Contato", CONTACT ? CONTACT : "Fale com o grupo pelo canal em que recebeu este link."],

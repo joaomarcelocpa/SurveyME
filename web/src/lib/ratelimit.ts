@@ -1,11 +1,14 @@
 import { createHash, randomBytes } from "node:crypto";
 
 // Somente em memoria (por instancia): nada disso vai ao banco.
+// Freio contra inundacao automatizada, nao contra pessoas: o limite e alto de proposito,
+// porque muitos participantes podem dividir a mesma rede (campus, sala de aula).
+// A repeticao por pessoa e tratada pelo marcador no aparelho (Survey.tsx) e na analise.
 const salt = randomBytes(16).toString("hex");
 const hits = new Map<string, number[]>();
 
 export const WINDOW_MS = 10 * 60 * 1000;
-export const MAX_HITS = 5;
+export const MAX_HITS = 100;
 
 export function allow(rawKey: string, now = Date.now()): boolean {
   const key = createHash("sha256").update(salt + rawKey).digest("hex");

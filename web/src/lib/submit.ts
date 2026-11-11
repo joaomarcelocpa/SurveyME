@@ -7,8 +7,6 @@ export type Result = { ok: true } | { ok: false; error: string };
 export type Deps = {
   open: boolean;
   clientKey: string;
-  /** Limite diario opcional (ex.: Upstash). Retorna false se estourou. */
-  dailyLimit?: (key: string) => Promise<boolean>;
   insert: (formVersion: string, answers: Record<string, unknown>) => Promise<void>;
 };
 
@@ -28,10 +26,6 @@ export async function processSubmission(input: unknown, deps: Deps): Promise<Res
 
   const { answers, duration_s } = parsed.data;
   if (failedScreening(answers)) return { ok: false, error: "Fora da população-alvo." };
-
-  if (deps.dailyLimit && !(await deps.dailyLimit(deps.clientKey))) {
-    return { ok: false, error: "Este aparelho ou rede já enviou respostas demais hoje. Tente amanhã." };
-  }
 
   await deps.insert(questionnaire.version, { ...answers, duration_s });
   return { ok: true };

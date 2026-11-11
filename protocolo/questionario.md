@@ -1,16 +1,19 @@
 # Questionário: Assistentes de IA no Aprendizado de Programação
 
-Instrumento aplicado no Google Forms, sem coleta de e-mail e sem exigir login.
+Instrumento aplicado em formulário web próprio (uma pergunta por tela), sem coleta de e-mail, IP ou qualquer identificador.
 Escala dos itens de concordância (Q10 a Q18): 1 = Discordo totalmente, 2 = Discordo, 3 = Neutro, 4 = Concordo, 5 = Concordo totalmente.
-Os códigos Qn são identificadores fixos; os itens de confiança e dependência aparecem alternados na tela.
+Os códigos Qn são identificadores fixos de cada item. Ordem de apresentação na tela: Q1 a Q9, depois Q10, Q14, Q11, Q15, Q18, Q12, Q16, Q13, Q17 e, por último, Q19 (itens de confiança e de dependência alternados, com a pergunta de atenção entre eles).
 
-## Termo de consentimento (descrição do formulário)
+## Termo de consentimento (tela inicial)
 
-Esta pesquisa é um trabalho acadêmico sobre o uso de IA no aprendizado de programação. Leva cerca de 5 minutos. A participação é voluntária e anônima: não coletamos nome, e-mail nem outros dados que identifiquem você. Os resultados serão apresentados de forma agregada. Você pode desistir a qualquer momento fechando a página.
+- **Finalidade:** trabalho acadêmico da disciplina de Medição e Experimentação em Engenharia de Software, sobre o uso de IA no aprendizado de programação.
+- **Anonimato:** não coletamos nome, e-mail, IP nem qualquer dado que identifique você. Os resultados serão apresentados de forma agregada. Para evitar envios repetidos, guardamos apenas um marcador no seu próprio aparelho (cookie e armazenamento local do navegador), que não é ligado às suas respostas e não identifica você.
+- **Voluntariedade:** a participação é voluntária. Você pode desistir a qualquer momento fechando a página.
+- **Armazenamento:** as respostas ficam em um banco de dados com acesso restrito aos integrantes do grupo e ao professor, não são publicadas e serão mantidas até o fim da disciplina (31/12/2026).
+- **Contato:** informado na própria tela.
+- **Aceite (obrigatório para começar):** "Li o termo e concordo em participar desta pesquisa."
 
-- **Consentimento:** Li e concordo / Não concordo (se "Não concordo", o formulário se encerra).
-
-## Filtros de elegibilidade (resposta "Não" encerra o formulário)
+## Filtros de elegibilidade (resposta "Não" encerra a participação)
 
 - **Q1.** Você é estudante de graduação em computação ou área afim? (Sim / Não)
 - **Q2.** Você já usou assistentes de IA (ChatGPT, Copilot, Claude, Gemini etc.) para estudar programação? (Sim / Não)

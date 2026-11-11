@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { _reset } from "./ratelimit";
+import { MAX_HITS, _reset } from "./ratelimit";
 import { processSubmission } from "./submit";
 
 const base = {
@@ -57,14 +57,12 @@ describe("processSubmission", () => {
     expect(r.ok).toBe(true);
   });
 
-  it("recusa quando o limite diario estourou", async () => {
-    const r = await processSubmission(good(), deps({ dailyLimit: async () => false }));
-    expect(r.ok).toBe(false);
-    expect(insert).not.toHaveBeenCalled();
+  it("nao barra varias pessoas na mesma rede (ate o limite anti-inundacao)", async () => {
+    for (let i = 0; i < MAX_HITS; i++) expect((await processSubmission(good(), deps())).ok).toBe(true);
   });
 
-  it("aplica rate limit", async () => {
-    for (let i = 0; i < 5; i++) await processSubmission(good(), deps());
+  it("aplica o freio anti-inundacao acima do limite", async () => {
+    for (let i = 0; i < MAX_HITS; i++) await processSubmission(good(), deps());
     expect((await processSubmission(good(), deps())).ok).toBe(false);
   });
 });

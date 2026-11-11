@@ -4,7 +4,7 @@ Itens que **não** estão implementados e dependem de aprovação antes de entra
 
 ## Hash de e-mail para limitar uma resposta por pessoa
 
-**Problema.** O formulário próprio não tem o limite de uma resposta por pessoa do Google Forms, que depende de login. Hoje há apenas o marcador no navegador, o limite diário por rede e a sinalização de quase-duplicatas, todos contornáveis.
+**Problema.** O formulário próprio não tem o limite de uma resposta por pessoa do Google Forms, que depende de login. Hoje há apenas o marcador no aparelho e a sinalização de quase-duplicatas, ambos contornáveis.
 
 **Ideia.** Pedir um e-mail (por exemplo institucional), confirmar por link e guardar somente um código irreversível dele (HMAC com segredo mantido fora do banco), em uma tabela separada das respostas, com restrição de unicidade. O e-mail em si não seria gravado.
 
