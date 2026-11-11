@@ -66,7 +66,7 @@ npm test
 | `SURVEY_OPEN` | `false` mostra "Pesquisa ainda não aberta" e recusa gravações; use `true` somente após a entrega do protocolo |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | Contato opcional exibido no termo de consentimento |
 
-Deploy: importe o repositório na Vercel com *Root Directory* `web` (mantenha habilitado o acesso a arquivos fora do diretório raiz, pois o build copia `questionnaire.json`) e defina as variáveis acima. O limite de envios é mantido em memória, por instância; funciona como freio simples contra spam, sem garantia entre instâncias.
+Deploy: importe o repositório na Vercel com *Root Directory* `web` (mantenha habilitado o acesso a arquivos fora do diretório raiz, pois o build copia `questionnaire.json`) e defina as variáveis acima. Variáveis opcionais `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` e `RATE_LIMIT_SALT` ativam um limite de 3 envios por dia por rede, com TTL de 24 h e chave por HMAC irreversível, fora do banco de respostas; sem elas, só há o limite em memória. Um marcador no navegador (localStorage e cookie) evita reenvio casual no mesmo aparelho. O limite de envios em memória vale por instância; funciona como freio simples contra spam, sem garantia entre instâncias.
 
 ### Painel (`dashboard/`)
 
