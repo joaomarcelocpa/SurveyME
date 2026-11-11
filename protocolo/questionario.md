@@ -2,7 +2,7 @@
 
 Instrumento aplicado em formulário web próprio (uma pergunta por tela), sem coleta de e-mail, IP ou qualquer identificador.
 Escala dos itens de concordância (Q10 a Q18): 1 = Discordo totalmente, 2 = Discordo, 3 = Depende, 4 = Concordo, 5 = Concordo totalmente.
-Os códigos Qn são identificadores fixos de cada item. Ordem de apresentação na tela: Q1 a Q9, depois Q10, Q14, Q11, Q15, Q12, Q16, Q13, Q17, Q18 e, por último, Q19 (itens de confiança e de dependência alternados, seguidos da pergunta de atenção; Q18 é a 18ª tela).
+Os códigos Qn são identificadores fixos de cada item. Ordem de apresentação na tela: Q1 a Q9, depois Q10, Q14, Q11, Q15, Q12, Q16, Q13, Q17, Q18, Q19 e, por último, Q20 (itens de confiança e de dependência alternados, seguidos da pergunta de atenção; Q18 é a 18ª tela).
 
 ## Termo de consentimento (tela inicial)
 
@@ -48,4 +48,5 @@ Os códigos Qn são identificadores fixos de cada item. Ordem de apresentação 
 
 ## Aberta (opcional)
 
-- **Q19.** Em uma frase, como a IA mudou sua forma de aprender a programar? *(Não inclua nomes ou dados que identifiquem você ou outras pessoas.)*
+- **Q19.** No geral, como você avalia o efeito da IA no seu aprendizado de programação? (Atrapalhou muito / Atrapalhou um pouco / Nem ajudou nem atrapalhou / Ajudou um pouco / Ajudou muito)
+- **Q20.** Em uma frase, como a IA mudou sua forma de aprender a programar? *(Não inclua nomes ou dados que identifiquem você ou outras pessoas.)*

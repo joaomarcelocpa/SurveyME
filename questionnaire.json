@@ -69,7 +69,8 @@
     "Q13",
     "Q17",
     "Q18",
-    "Q19"
+    "Q19",
+    "Q20"
   ],
   "items": [
     {
@@ -646,6 +647,39 @@
     },
     {
       "id": "Q19",
+      "text": "No geral, como você avalia o efeito da IA no seu aprendizado de programação?",
+      "type": "single",
+      "rq": null,
+      "metric": "Efeito percebido da IA no aprendizado (descritivo)",
+      "scale": "ordinal",
+      "role": "profile",
+      "options": [
+        {
+          "value": "atrapalhou_muito",
+          "label": "Atrapalhou muito"
+        },
+        {
+          "value": "atrapalhou_pouco",
+          "label": "Atrapalhou um pouco"
+        },
+        {
+          "value": "indiferente",
+          "label": "Nem ajudou nem atrapalhou"
+        },
+        {
+          "value": "ajudou_pouco",
+          "label": "Ajudou um pouco"
+        },
+        {
+          "value": "ajudou_muito",
+          "label": "Ajudou muito"
+        }
+      ],
+      "required": true,
+      "construct": null
+    },
+    {
+      "id": "Q20",
       "text": "Em uma frase, como a IA mudou sua forma de aprender a programar? (opcional; não inclua nomes ou dados que identifiquem você ou outras pessoas)",
       "type": "open",
       "rq": null,

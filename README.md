@@ -88,7 +88,7 @@ SURVEY_SOURCE=csv:data/seed_dev.csv .venv/bin/streamlit run app.py
 
 `seed_dev.py --db` grava apenas em `responses_dev` (via `DATABASE_URL_DEV`). Esses dados não representam coleta real e não devem ser usados em produção; o painel exibe um aviso quando os detecta.
 
-A exportação de CSV traz todas as respostas, com data e hora, sem dado pessoal. O campo aberto (Q19) é texto livre e deve ser revisado antes de qualquer divulgação.
+A exportação de CSV traz todas as respostas, com data e hora, sem dado pessoal. O campo aberto (Q20) é texto livre e deve ser revisado antes de qualquer divulgação.
 
 ### Tabela de rastreabilidade
 

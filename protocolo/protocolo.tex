@@ -68,7 +68,7 @@ No pior caso ($p = 0{,}5$), com $n = 50$ obtém-se $e \approx \pm 13{,}9$ pontos
 
 \section{Questionário com rastreabilidade}
 
-O instrumento é um formulário web próprio, com uma pergunta por tela, que grava as respostas em um banco de dados. Ele não coleta nome, e-mail, endereço IP, \emph{user-agent} nem qualquer identificador: registra apenas as respostas, a data e hora do envio e o tempo de preenchimento. Para evitar respostas repetidas, o site grava no próprio aparelho do participante um marcador (cookie e armazenamento local do navegador) após o envio, sem relação com as respostas e sem identificar a pessoa; quem já respondeu vê um aviso e só prossegue se indicar que é outra pessoa. Não há limite por rede, pois muitos participantes podem compartilhar o mesmo Wi-Fi. Itens de concordância usam escala Likert de 5 pontos (1 = Discordo totalmente, 3 = Depende, 5 = Concordo totalmente). Os itens de confiança (Q10--Q13) e de dependência (Q14--Q17) são apresentados de forma alternada entre os dois construtos, e não em blocos separados, e a pergunta de atenção (Q18) vem logo depois deles. A posição de cada item na tela coincide com o seu código (Q1 é a 1ª tela, Q18 é a 18ª), exceto pela ordem alternada dos itens Q10--Q17. Os códigos Q1--Q19 são identificadores fixos de cada item, independentes da posição na tela, e são usados como chaves nos dados brutos.
+O instrumento é um formulário web próprio, com uma pergunta por tela, que grava as respostas em um banco de dados. Ele não coleta nome, e-mail, endereço IP, \emph{user-agent} nem qualquer identificador: registra apenas as respostas, a data e hora do envio e o tempo de preenchimento. Para evitar respostas repetidas, o site grava no próprio aparelho do participante um marcador (cookie e armazenamento local do navegador) após o envio, sem relação com as respostas e sem identificar a pessoa; quem já respondeu vê um aviso e só prossegue se indicar que é outra pessoa. Não há limite por rede, pois muitos participantes podem compartilhar o mesmo Wi-Fi. Itens de concordância usam escala Likert de 5 pontos (1 = Discordo totalmente, 3 = Depende, 5 = Concordo totalmente). Os itens de confiança (Q10--Q13) e de dependência (Q14--Q17) são apresentados de forma alternada entre os dois construtos, e não em blocos separados, e a pergunta de atenção (Q18) vem logo depois deles. A posição de cada item na tela coincide com o seu código (Q1 é a 1ª tela, Q18 é a 18ª e Q20 é a última), exceto pela ordem alternada dos itens Q10--Q17. Os códigos Q1--Q20 são identificadores fixos de cada item, independentes da posição na tela, e são usados como chaves nos dados brutos.
 
 \textbf{Consentimento e filtros.} O questionário só é liberado após o aceite do termo de consentimento. Q1 (é estudante de graduação em computação ou área afim?) e Q2 (já usou IA para estudar programação?) são filtros de elegibilidade: quem responde ``Não'' em qualquer um deles tem a participação encerrada.
 
@@ -96,7 +96,8 @@ Q15 & Teria dificuldade em estudar programação sem IA. & Ordinal & QP2 \\
 Q16 & Uso código gerado pela IA sem entender completamente. & Ordinal & QP2 \\
 Q17 & Tento resolver sozinho(a) antes de pedir ajuda à IA (\emph{invertido}). & Ordinal & QP2 \\
 Q18 & Pergunta de atenção: ``Marque \emph{Discordo totalmente}''. & Nominal & Descarte \\
-Q19 & Como a IA mudou sua forma de aprender a programar? (aberta, opcional) & Texto & Complemento \\
+Q19 & Efeito percebido da IA no aprendizado (atrapalhou muito a ajudou muito) & Ordinal & Descritivo \\
+Q20 & Como a IA mudou sua forma de aprender a programar? (aberta, opcional) & Texto & Complemento \\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -119,7 +120,7 @@ As respostas do pré-teste não entram na amostra final.
 
 \textbf{Preparação dos dados.} Serão descartadas as respostas que (i) não marquem a opção esperada na pergunta de atenção Q18, (ii) não atendam aos filtros de elegibilidade, (iii) estejam incompletas nos itens obrigatórios, (iv) tenham tempo de preenchimento inferior a 60 segundos, limiar definido antes da coleta a partir do tempo médio do pré-teste (cerca de 5 minutos), ou (v) sejam duplicadas, isto é, tenham conteúdo idêntico ao de outra resposta enviada em até 10 minutos (mantida a primeira). Respostas quase idênticas (mesmo perfil e escalas com diferença total de até 2 pontos, em até 60 minutos) são apenas sinalizadas no painel para revisão manual, sem descarte automático. Nenhuma resposta é apagada do banco: o descarte é calculado na análise, com o motivo registrado, e o efeito de cada critério é reportado no painel. O item Q17 será invertido ($6 - x$) antes do cálculo dos escores.
 
-\textbf{Estatística descritiva.} Frequências e percentuais para variáveis nominais e ordinais; mediana e intervalo interquartil para escores; gráficos de barras divergentes para os itens Likert. Para QP2 e QP3, os níveis do fator serão comparados com a medida de tendência central de cada grupo. As variáveis Q4, Q5 e Q8 serão usadas de forma descritiva e como segmentos de filtro no painel.
+\textbf{Estatística descritiva.} Frequências e percentuais para variáveis nominais e ordinais; mediana e intervalo interquartil para escores; gráficos de barras divergentes para os itens Likert. Para QP2 e QP3, os níveis do fator serão comparados com a medida de tendência central de cada grupo. As variáveis Q4, Q5, Q8 e Q19 serão usadas de forma descritiva e como segmentos de filtro no painel.
 
 \textbf{Confiabilidade.} Alfa de Cronbach para cada construto; valores a partir de 0,70 serão considerados aceitáveis. Se um item reduzir muito o alfa, será reportada a análise com e sem ele.
 
@@ -141,7 +142,7 @@ QP3 & Mann-Whitney (escore de confiança em Q9: marcou gerar código sem dúvida
 
 \textbf{Margem de erro e interpretação.} A margem de erro será reportada junto aos resultados, e as conclusões descreverão \emph{associações}, nunca causalidade.
 
-\textbf{Respostas abertas (Q19).} Análise de conteúdo por codificação indutiva: dois integrantes codificam independentemente em categorias, discordâncias são resolvidas por consenso e a concordância inicial entre os codificadores é reportada em percentual. Trechos exibidos serão revisados para remover qualquer informação identificável.
+\textbf{Respostas abertas (Q20).} Análise de conteúdo por codificação indutiva: dois integrantes codificam independentemente em categorias, discordâncias são resolvidas por consenso e a concordância inicial entre os codificadores é reportada em percentual. Trechos exibidos serão revisados para remover qualquer informação identificável.
 
 \section{Ética e LGPD}
 

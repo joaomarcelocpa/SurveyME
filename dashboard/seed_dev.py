@@ -50,6 +50,7 @@ def gerar(n: int = 80, seed: int = 7) -> list[dict]:
             a[c] = lk(dep_base)
         a["Q17"] = lk(6 - dep_base)
         a["Q18"] = 1
+        a["Q19"] = str(rng.choice(["atrapalhou_muito", "atrapalhou_pouco", "indiferente", "ajudou_pouco", "ajudou_muito"], p=[0.05, 0.1, 0.2, 0.4, 0.25]))
         a["duration_s"] = int(rng.integers(150, 600))
         a = {k: (v.item() if hasattr(v, "item") else v) for k, v in a.items()}
         # casos para exercitar os descartes

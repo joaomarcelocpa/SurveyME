@@ -82,7 +82,7 @@ export default function Survey() {
     }
     setPhase("submitting");
     const clean: Answers = { ...answers };
-    if (typeof clean.Q19 === "string" && clean.Q19.trim() === "") delete clean.Q19;
+    if (typeof clean.Q20 === "string" && clean.Q20.trim() === "") delete clean.Q20;
     const res = await submitSurvey({
       consent: true,
       website,

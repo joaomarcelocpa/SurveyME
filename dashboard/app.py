@@ -16,7 +16,7 @@ st.set_page_config(page_title="Survey: IA no aprendizado de programação", layo
 q = an.load_questionnaire()
 items = an.item_map(q)
 
-PERFIL = ["Q3", "Q4", "Q5", "Q6", "Q8", "Q9"]
+PERFIL = ["Q3", "Q4", "Q5", "Q6", "Q8", "Q9", "Q19"]
 
 
 def rotulo(iid: str, v) -> str:
