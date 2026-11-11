@@ -58,7 +58,7 @@ Medição e Experimentação em Engenharia de Software -- 2º/2026}
 
 \textbf{Justificativa para usar estudantes.} O objetivo investiga o uso de IA no \emph{processo de aprendizagem}; portanto, a população-alvo são estudantes, e colegas de curso e de outras instituições compõem a amostra legítima, conforme a exceção prevista no enunciado.
 
-\textbf{Origem dos contatos e estratégia.} Amostragem \emph{não probabilística}, por conveniência e bola de neve. A divulgação ocorrerá por \textbf{WhatsApp} (grupos de turmas, de cursos e de comunidades de programação, além de mensagens diretas a contatos dos integrantes) e por \textbf{Instagram} (\emph{stories} e publicações dos integrantes, perfis de centros acadêmicos e de comunidades de computação, e mensagens diretas), sempre com pedido de repasse.
+\textbf{Origem dos contatos e estratégia.} Amostragem \emph{não probabilística}, por conveniência e bola de neve. A divulgação ocorrerá apenas por \textbf{WhatsApp} (grupos de turmas, de cursos e de comunidades de programação, além de mensagens diretas a contatos dos integrantes), sempre com pedido de repasse.
 
 \textbf{Tamanho de amostra e margem de erro.} Meta de 60 respostas e mínimo de \textbf{50 respostas válidas}. A margem de erro de uma proporção, com 95\% de confiança, é
 \[
@@ -146,11 +146,10 @@ QP3 & Mann-Whitney (escore de confiança por principal uso em Q9: gerar código 
 \section{Ética e LGPD}
 
 \begin{itemize}
-  \item \textbf{Consentimento.} A tela inicial traz o termo de consentimento: finalidade acadêmica, anonimato, voluntariedade, forma de armazenamento e contato. O questionário só é liberado após o aceite, e a pessoa pode desistir a qualquer momento fechando a página.
-  \item \textbf{Dados coletados.} Nenhum dado pessoal direto (nome, e-mail, matrícula, telefone ou rede social). O endereço IP e o \emph{user-agent} não são gravados; o IP pode ser usado apenas de forma transitória, em memória e com \emph{hash}, na proteção contra envios automatizados. No aparelho do participante é gravado apenas um marcador (cookie e armazenamento local) para evitar respostas repetidas, sem ligação com as respostas. O banco guarda as respostas, a data e hora do envio e o tempo de preenchimento. Variáveis de perfil são agrupadas em faixas e categorias para reduzir o risco de reidentificação, e não se pergunta o curso, a instituição nem a cidade do participante.
-  \item \textbf{Armazenamento.} As respostas ficam em banco de dados em nuvem (PostgreSQL) com acesso restrito ao grupo e ao professor. A tabela de respostas é imutável (alterações e remoções são bloqueadas) e o painel de análise usa um usuário somente leitura. Os dados brutos \emph{não} são publicados no repositório do GitHub e serão mantidos apenas até o fim da disciplina, 31/12/2026.
-  \item \textbf{Divulgação dos resultados.} Apenas de forma agregada. Evidências (capturas de tela) não exibirão dados pessoais, e nomes de quem compartilhar a divulgação serão ocultados.
-  \item \textbf{Normas institucionais.} O grupo seguirá todas as orientações da instituição para pesquisas com pessoas.
+  \item \textbf{Consentimento.} A tela inicial traz o termo (finalidade acadêmica, anonimato, voluntariedade, armazenamento e contato). O questionário só é liberado após o aceite, e a pessoa pode desistir a qualquer momento.
+  \item \textbf{Dados coletados.} Nenhum dado pessoal direto (nome, e-mail, matrícula, telefone ou rede social). IP e \emph{user-agent} não são gravados; o IP é usado só de forma transitória, em memória e com \emph{hash}, contra envios automatizados. No aparelho fica apenas um marcador (cookie e armazenamento local) para evitar respostas repetidas, sem ligação com as respostas. O banco guarda as respostas, data e hora do envio e tempo de preenchimento. O perfil é agrupado em faixas e não se pergunta curso, instituição nem cidade.
+  \item \textbf{Armazenamento.} Banco em nuvem (PostgreSQL) com acesso restrito ao grupo e ao professor, tabela imutável e painel com usuário somente leitura. Os dados brutos \emph{não} vão ao GitHub e são mantidos até 31/12/2026.
+  \item \textbf{Divulgação dos resultados.} Apenas de forma agregada, sem dados pessoais nas evidências. O grupo seguirá as normas institucionais para pesquisas com pessoas.
 \end{itemize}
 
 \section{Ameaças à validade}
@@ -161,22 +160,22 @@ QP3 & Mann-Whitney (escore de confiança por principal uso em Q9: gerar código 
 \textbf{Ameaça} & \textbf{Descrição} & \textbf{Mitigação} \\
 \midrule
 \endhead
-Autosseleção e não resposta & Quem responde pode ter mais interesse ou opinião mais forte sobre IA. & Divulgar em canais variados; reportar o perfil da amostra e a limitação; não generalizar. \\
-Viés de canal / conveniência & A amostra reflete os grupos onde o link circula. & Usar vários canais e comparar o perfil por segmento. \\
-Desejabilidade social & Estudantes podem subestimar o uso de IA por receio de parecer que ``colam''. & Garantir e declarar o anonimato; usar linguagem neutra nos itens; registrar a política dos professores (Q8) para interpretar possível subnotificação. \\
+Autosseleção e não resposta & Quem responde pode ter opinião mais forte sobre IA. & Divulgar em grupos variados; reportar o perfil da amostra; não generalizar. \\
+Viés de canal / conveniência & A amostra reflete os grupos de WhatsApp onde o link circula. & Usar grupos distintos e comparar o perfil por segmento. \\
+Desejabilidade social & Estudantes podem subestimar o uso de IA. & Declarar o anonimato; linguagem neutra; usar a política dos professores (Q8) para interpretar. \\
 Autorrelato & Confiança e dependência são percebidas, não medem desempenho real. & Declarar como limitação; conclusões restritas a percepções. \\
-Respostas descuidadas & Marcações automáticas sem leitura. & Pergunta de atenção (Q18), tempo mínimo de preenchimento (60 s), campo-isca (\emph{honeypot}), itens alternados entre os construtos e item invertido (Q17). \\
-Envios duplicados ou automatizados & O mesmo participante pode enviar mais de uma vez, ou haver envios automatizados. & Marcador no aparelho do participante, descarte de respostas idênticas em até 10 minutos, sinalização de quase-duplicatas para revisão manual, tempo mínimo e campo-isca. Quem limpa os dados do navegador ou usa outro aparelho pode responder de novo, o que não pode ser impedido sem identificar o participante; isso é declarado como limitação. \\
+Respostas descuidadas & Marcações automáticas sem leitura. & Pergunta de atenção (Q18), tempo mínimo (60 s), campo-isca, itens alternados e item invertido (Q17). \\
+Envios duplicados ou automatizados & Mesmo participante enviar mais de uma vez, ou envios automatizados. & Marcador no aparelho, descarte de respostas idênticas em até 10 minutos, sinalização de quase-duplicatas para revisão, tempo mínimo e campo-isca. Limpar o navegador ou trocar de aparelho permite responder de novo; declarado como limitação. \\
 Validade de construto & Poucos itens podem não representar o construto. & Quatro itens por construto, pré-teste e alfa de Cronbach. \\
-Validade de conclusão & Amostra pequena e múltiplos testes aumentam falsos positivos. & Testes não paramétricos, tamanho de efeito, correção de Holm e margem de erro reportada. \\
-Causalidade & Survey observa associações, não causas. & Redação das conclusões e do objetivo sem termos causais. \\
+Validade de conclusão & Amostra pequena e múltiplos testes elevam falsos positivos. & Testes não paramétricos, tamanho de efeito, correção de Holm e margem de erro. \\
+Causalidade & Survey observa associações, não causas. & Conclusões sem termos causais. \\
 \bottomrule
 \end{longtable}}
 
 \section{Plano de divulgação}
 
 \begin{itemize}
-  \item \textbf{Canais:} \textbf{WhatsApp} (grupos de turmas, de cursos e de comunidades de programação; mensagens diretas) e \textbf{Instagram} (\emph{stories} e publicações dos integrantes, perfis de centros acadêmicos e de comunidades de computação, mensagens diretas). Cada integrante também repassa o link a conhecidos que estudam computação, com pedido de repasse (bola de neve).
+  \item \textbf{Canais:} \textbf{WhatsApp} (grupos de turmas, de cursos e de comunidades de programação; mensagens diretas). Cada integrante também repassa o link a conhecidos que estudam computação, com pedido de repasse (bola de neve).
   \item \textbf{Mensagem padrão:} apresenta o grupo, o objetivo, o tempo (cerca de 5 minutos), o anonimato e o link.
   \item \textbf{Período de coleta:} de 13/11/2026 a 23/11/2026, com reforços da divulgação em dias e horários diferentes.
   \item \textbf{Registro:} capturas datadas da divulgação (sem dados pessoais) e exportação bruta do banco de dados (CSV gerado pelo painel) com data e hora de cada resposta, além do acesso ao painel de análise durante a apresentação.
