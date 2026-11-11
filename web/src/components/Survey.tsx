@@ -6,7 +6,14 @@ import { itemsInOrder, questionnaire, type Item } from "@/lib/questionnaire";
 
 type Value = string | number | string[];
 type Answers = Record<string, Value>;
-type Phase = "consent" | "questions" | "submitting" | "done" | "ineligible";
+type Phase = "consent" | "questions" | "submitting" | "done" | "ineligible" | "already";
+
+const MARK = "survey_respondido";
+const readMark = () => { try { return localStorage.getItem(MARK) === questionnaire.version || document.cookie.includes(`${MARK}=1`); } catch { return false; } };
+const writeMark = () => {
+  try { localStorage.setItem(MARK, questionnaire.version); } catch {}
+  try { document.cookie = `${MARK}=1; max-age=31536000; path=/; SameSite=Lax`; } catch {}
+};
 
 const CONTACT = process.env.NEXT_PUBLIC_CONTACT_EMAIL;
 const letter = (i: number) => String.fromCharCode(65 + i);
@@ -22,6 +29,8 @@ export default function Survey() {
   const focusRef = useRef<HTMLElement | null>(null);
   const mounted = useRef(false);
   const [notice, setNotice] = useState<string | null>(null);
+
+  useEffect(() => { if (readMark()) setPhase("already"); }, []);
 
   const item = itemsInOrder[step];
   const total = itemsInOrder.length;
@@ -80,7 +89,10 @@ export default function Survey() {
       duration_s: Math.round((Date.now() - startedAt.current) / 1000),
       answers: clean,
     });
-    if (res.ok) setPhase("done");
+    if (res.ok) {
+      writeMark();
+      setPhase("done");
+    }
     else {
       setError(res.error);
       setPhase("questions");
@@ -128,7 +140,7 @@ export default function Survey() {
               <dl className="mt-3 border-t text-base leading-relaxed" style={{ borderColor: "var(--line)" }}>
                 {[
                   ["Finalidade", "Trabalho acadêmico da disciplina de Medição e Experimentação em Engenharia de Software, sobre o uso de IA no aprendizado de programação."],
-                  ["Anonimato", "Não coletamos nome, e-mail, IP nem qualquer dado que identifique você. Os resultados serão apresentados de forma agregada."],
+                  ["Anonimato", "Não coletamos nome, e-mail, IP nem qualquer dado que identifique você. Os resultados serão apresentados de forma agregada. Para evitar envios repetidos, guardamos um marcador no seu navegador e um contador temporário (até 24 horas) derivado da sua rede por um código irreversível; ele nunca é ligado às suas respostas e depois é apagado."],
                   ["Voluntariedade", "A participação é voluntária. Você pode desistir a qualquer momento fechando a página."],
                   ["Armazenamento", "As respostas ficam em um banco de dados com acesso restrito aos integrantes do grupo e ao professor, não são publicadas e serão mantidas até o fim da disciplina (31/12/2026)."],
                   ["Contato", CONTACT ? CONTACT : "Fale com o grupo pelo canal em que recebeu este link."],
@@ -200,6 +212,18 @@ export default function Survey() {
                 )}
                 <span aria-hidden className="ml-auto hidden text-sm sm:inline" style={{ color: "var(--muted)" }}>Enter ↵</span>
               </div>
+            </div>
+          )}
+
+          {phase === "already" && (
+            <div>
+              <h1 ref={(el) => { if (phase === "already") focusRef.current = el; }} tabIndex={-1} className="text-3xl font-medium leading-tight">Você já respondeu esta pesquisa</h1>
+              <p className="mt-4 max-w-xl text-lg leading-relaxed" style={{ color: "var(--muted)" }}>
+                Este aparelho já enviou uma resposta. Cada pessoa participa uma vez; obrigado pela contribuição.
+              </p>
+              <button className="mt-8 min-h-11 text-base underline underline-offset-4" style={{ color: "var(--muted)" }} onClick={() => setPhase("consent")}>
+                Outra pessoa vai responder neste aparelho
+              </button>
             </div>
           )}
 

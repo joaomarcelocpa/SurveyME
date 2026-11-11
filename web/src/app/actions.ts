@@ -2,7 +2,15 @@
 
 import { neon } from "@neondatabase/serverless";
 import { headers } from "next/headers";
+import { makeDailyLimit } from "@/lib/dailylimit";
 import { processSubmission, type Result } from "@/lib/submit";
+
+function dailyLimit() {
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) return undefined;
+  return makeDailyLimit(url, token, process.env.RATE_LIMIT_SALT ?? token);
+}
 
 export async function submitSurvey(input: unknown): Promise<Result> {
   const h = await headers();
@@ -13,6 +21,7 @@ export async function submitSurvey(input: unknown): Promise<Result> {
     return await processSubmission(input, {
       open: process.env.SURVEY_OPEN === "true",
       clientKey,
+      dailyLimit: dailyLimit(),
       insert: async (formVersion, answers) => {
         const url = process.env.DATABASE_URL;
         if (!url) throw new Error("DATABASE_URL ausente");

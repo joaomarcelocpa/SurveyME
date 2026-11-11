@@ -57,6 +57,12 @@ describe("processSubmission", () => {
     expect(r.ok).toBe(true);
   });
 
+  it("recusa quando o limite diario estourou", async () => {
+    const r = await processSubmission(good(), deps({ dailyLimit: async () => false }));
+    expect(r.ok).toBe(false);
+    expect(insert).not.toHaveBeenCalled();
+  });
+
   it("aplica rate limit", async () => {
     for (let i = 0; i < 5; i++) await processSubmission(good(), deps());
     expect((await processSubmission(good(), deps())).ok).toBe(false);
