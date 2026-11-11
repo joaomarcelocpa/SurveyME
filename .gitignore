@@ -12,3 +12,4 @@ dashboard/data/
 *.csv
 *.tsbuildinfo
 .vercel
+.idea/
