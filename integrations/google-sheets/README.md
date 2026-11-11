@@ -24,8 +24,9 @@ oficial**: se a planilha falhar, a resposta já está salva e o participante nã
 Antes do site, direto no receptor (cria uma linha de teste; apague-a depois):
 
 ```bash
-curl -L -X POST "URL_EXEC" -H "Content-Type: text/plain" \
+curl -L "URL_EXEC" -H "Content-Type: text/plain" \
   -d '{"token":"SEU_SECRET","headers":["Carimbo de data/hora","Q1. teste","ID da resposta"],"row":["2026-11-13T12:00:00.000Z","ok","teste-1"]}'
+# Nao use -X POST: com -L o curl repetiria o POST no redirecionamento do Google e daria "Nao foi possivel abrir o arquivo".
 # esperado: {"ok":true}   (com token errado: {"ok":false,"error":"nao autorizado"})
 ```
 
