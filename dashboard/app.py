@@ -95,10 +95,18 @@ def pagina_painel():
     st.sidebar.header("Filtros (amostra válida)")
     filtrado = validos
     for iid in PERFIL:
-        ops = [o["value"] for o in items[iid]["options"] if o["value"] in set(validos[iid].dropna())]
+        multi = items[iid]["type"] == "multi"
+        if multi:
+            ops = [o["value"] for o in items[iid]["options"] if an.tem_opcao(validos[iid], o["value"]).any()]
+        else:
+            ops = [o["value"] for o in items[iid]["options"] if o["value"] in set(validos[iid].dropna())]
         esc = st.sidebar.multiselect(items[iid]["text"], ops, format_func=lambda v, i=iid: rotulo(i, v))
         if esc:
-            filtrado = filtrado[filtrado[iid].isin(esc)]
+            if multi:  # basta ter marcado qualquer uma das opcoes escolhidas
+                mask = pd.concat([an.tem_opcao(filtrado[iid], v) for v in esc], axis=1).any(axis=1)
+                filtrado = filtrado[mask]
+            else:
+                filtrado = filtrado[filtrado[iid].isin(esc)]
     st.sidebar.caption(f"{len(filtrado)} de {len(validos)} respostas válidas após filtros.")
 
     min_n = q["min_duration_seconds"]
@@ -124,12 +132,18 @@ def pagina_painel():
         st.subheader("Perfil (amostra filtrada)")
         n = len(filtrado)
         for iid in PERFIL:
-            cont = filtrado[iid].value_counts()
+            if items[iid]["type"] == "multi":  # cada pessoa pode marcar varias: soma passa de 100%
+                cont = pd.Series({o["value"]: int(an.tem_opcao(filtrado[iid], o["value"]).sum()) for o in items[iid]["options"]})
+                cont = cont[cont > 0].sort_values(ascending=False)
+            else:
+                cont = filtrado[iid].value_counts()
             tab = pd.DataFrame({"opção": [rotulo(iid, v) for v in cont.index], "n": cont.values,
                                 "%": (100 * cont.values / n).round(1) if n else 0,
                                 "± p.p.": [round(100 * an.margin_of_error(c / n, n), 1) for c in cont.values] if n else 0})
             with st.expander(items[iid]["text"], expanded=iid in ("Q3", "Q6")):
                 st.dataframe(tab, hide_index=True)
+                if items[iid]["type"] == "multi":
+                    st.caption("Múltipla escolha: a soma dos percentuais pode passar de 100%.")
 
     with t2:
         st.caption("Itens de confiança e dependência (amostra filtrada). Q17 aparece como respondido, sem inversão.")

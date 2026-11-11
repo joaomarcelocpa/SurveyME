@@ -4,7 +4,7 @@ import { processSubmission } from "./submit";
 
 const base = {
   Q1: "sim", Q2: "sim", Q3: "5-8", Q4: "nao", Q5: "1-2", Q6: "semanal", Q7: ["chatgpt"],
-  Q8: "varia", Q9: "duvidas", Q10: 3, Q11: 3, Q12: 3, Q13: 3, Q14: 3, Q15: 3, Q16: 3, Q17: 3, Q18: 1,
+  Q8: "varia", Q9: ["duvidas", "gerar_testes"], Q10: 3, Q11: 3, Q12: 3, Q13: 3, Q14: 3, Q15: 3, Q16: 3, Q17: 3, Q18: 1,
 };
 const good = () => ({ consent: true, website: "", duration_s: 200, answers: { ...base } });
 

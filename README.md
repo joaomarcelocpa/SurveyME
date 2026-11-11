@@ -16,13 +16,13 @@ O grupo planejou e executou uma **survey** para investigar o uso de assistentes 
 
 1. A frequência de uso de IA se associa à confiança em programar sem IA?
 2. A dependência percebida da IA varia entre estudantes de períodos diferentes do curso (início, meio e fim)?
-3. Quem usa IA principalmente para gerar código difere, quanto à confiança, de quem a usa para tirar dúvidas e obter explicações?
+3. Quem usa IA para gerar código (sem usá-la para tirar dúvidas) difere, quanto à confiança, de quem a usa para tirar dúvidas e obter explicações (sem gerar código)?
 
 ### Métricas
 
 - **Confiança percebida:** média dos itens Q10–Q13 (Likert de 5 pontos).
 - **Dependência percebida:** média dos itens Q14–Q17, com Q17 invertido (Likert de 5 pontos).
-- **Variáveis de contexto:** frequência de uso (Q6), principal uso (Q9) e período do curso (Q3).
+- **Variáveis de contexto:** frequência de uso (Q6), usos da IA (Q9) e período do curso (Q3).
 
 ## Equipe
 

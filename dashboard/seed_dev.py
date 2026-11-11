@@ -29,8 +29,8 @@ def gerar(n: int = 80, seed: int = 7) -> list[dict]:
     for i in range(n):
         freq = int(rng.integers(0, 5))
         periodo = rng.choice(["1-4", "5-8", "9+"], p=[0.4, 0.4, 0.2])
-        uso = rng.choice(["gerar_codigo", "duvidas", "depurar", "outro"], p=[0.3, 0.4, 0.2, 0.1])
-        conf_base = 3.8 - 0.35 * freq - (0.4 if uso == "gerar_codigo" else 0)
+        usos = [u for u, pr in (("gerar_codigo", 0.35), ("duvidas", 0.55), ("corrigir_erros", 0.45), ("gerar_testes", 0.15), ("outro", 0.05)) if rng.random() < pr] or ["duvidas"]
+        conf_base = 3.8 - 0.35 * freq - (0.4 if "gerar_codigo" in usos else 0)
         dep_base = 3.0 + (0.3 if periodo == "1-4" else -0.1)
 
         def lk(base):
@@ -41,7 +41,7 @@ def gerar(n: int = 80, seed: int = 7) -> list[dict]:
             "Q4": rng.choice(["sim", "nao"]), "Q5": rng.choice(["<1", "1-2", "3-5", ">5"]),
             "Q6": it["Q6"]["options"][freq]["value"],
             "Q7": list(rng.choice(["chatgpt", "copilot", "claude", "gemini", "outra"], size=int(rng.integers(1, 4)), replace=False)),
-            "Q8": rng.choice([o["value"] for o in it["Q8"]["options"]]), "Q9": str(uso),
+            "Q8": rng.choice([o["value"] for o in it["Q8"]["options"]]), "Q9": usos,
             "_dev": True,
         }
         for c in ("Q10", "Q11", "Q12", "Q13"):

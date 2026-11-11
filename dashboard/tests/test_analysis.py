@@ -72,8 +72,20 @@ def test_quase_duplicata_sinalizada_e_identica_nao():
     ident = dict(a)
     t0 = rows[0]["created_at"]
     mk = lambda ans, m: {"id": f"id{m}", "created_at": t0 + pd.Timedelta(minutes=m), "form_version": "1", "consent": True, "answers": ans}
-    df = an.rows_to_df([mk(a, 0), mk(quase, 5), mk({**a, "Q9": "outro", "Q10": 1}, 6)])
+    df = an.rows_to_df([mk(a, 0), mk(quase, 5), mk({**a, "Q9": ["outro"], "Q10": 1}, 6)])
     f = an.flag_near_duplicates(df, Q)
     assert f.tolist() == [False, a["Q10"] < 5, False]
     df2 = an.rows_to_df([mk(a, 0), mk(ident, 5)])
     assert not an.flag_near_duplicates(df2, Q).any()
+
+
+def test_grupo_exclusivo_multipla_escolha():
+    s = pd.Series(["gerar_codigo", "duvidas", "duvidas|gerar_codigo", "corrigir_erros", "duvidas|gerar_testes"])
+    g = an.grupo_exclusivo(s, "gerar_codigo", "duvidas")
+    assert g.tolist()[:2] == ["gerar_codigo", "duvidas"]
+    assert pd.isna(g[2]) and pd.isna(g[3])
+    assert g[4] == "duvidas"
+
+
+def test_normaliza_multipla_ordenada():
+    assert an.normalize_answers({"Q9": ["duvidas", "gerar_codigo"]})["Q9"] == "duvidas|gerar_codigo"

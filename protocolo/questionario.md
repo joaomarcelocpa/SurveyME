@@ -1,8 +1,8 @@
 # Questionário: Assistentes de IA no Aprendizado de Programação
 
 Instrumento aplicado em formulário web próprio (uma pergunta por tela), sem coleta de e-mail, IP ou qualquer identificador.
-Escala dos itens de concordância (Q10 a Q18): 1 = Discordo totalmente, 2 = Discordo, 3 = Neutro, 4 = Concordo, 5 = Concordo totalmente.
-Os códigos Qn são identificadores fixos de cada item. Ordem de apresentação na tela: Q1 a Q9, depois Q10, Q14, Q11, Q15, Q18, Q12, Q16, Q13, Q17 e, por último, Q19 (itens de confiança e de dependência alternados, com a pergunta de atenção entre eles).
+Escala dos itens de concordância (Q10 a Q18): 1 = Discordo totalmente, 2 = Discordo, 3 = Depende, 4 = Concordo, 5 = Concordo totalmente.
+Os códigos Qn são identificadores fixos de cada item. Ordem de apresentação na tela: Q1 a Q9, depois Q10, Q14, Q11, Q15, Q12, Q16, Q13, Q17, Q18 e, por último, Q19 (itens de confiança e de dependência alternados, seguidos da pergunta de atenção; Q18 é a 18ª tela).
 
 ## Termo de consentimento (tela inicial)
 
@@ -26,7 +26,7 @@ Os códigos Qn são identificadores fixos de cada item. Ordem de apresentação 
 - **Q6.** Com que frequência você usa IA nos seus estudos de programação? (Raramente / Algumas vezes por mês / Toda semana / Quase todo dia / Todo dia)
 - **Q7.** Quais ferramentas de IA você usa? Marque todas que se aplicam. (ChatGPT / Copilot / Claude / Gemini / Outra)
 - **Q8.** Seus professores permitem ou incentivam o uso de IA nas disciplinas? (Não permitem / Permitem com restrições / Permitem ou incentivam / Varia conforme a disciplina)
-- **Q9.** Para que você usa a IA com mais frequência nos estudos? (Gerar código pronto / Tirar dúvidas e pedir explicações / Depurar erros / Outro)
+- **Q9.** Para que você usa a IA nos estudos? Marque todas que se aplicam. (Gerar código pronto / Tirar dúvidas e pedir explicações / Corrigir erros / Gerar testes automatizados / Outro)
 
 ## Confiança em programar sem IA (Likert 1 a 5)
 

@@ -47,10 +47,10 @@ Medição e Experimentação em Engenharia de Software -- 2º/2026}
 \begin{itemize}
   \item \textbf{QP1.} A frequência de uso de IA nos estudos se associa à confiança em programar sem IA?
   \item \textbf{QP2.} A dependência percebida da IA varia entre estudantes de períodos diferentes do curso (início, meio e fim)?
-  \item \textbf{QP3.} Estudantes que usam IA principalmente para gerar código diferem, quanto à confiança em programar sem IA, dos que a usam principalmente para tirar dúvidas e obter explicações?
+  \item \textbf{QP3.} Estudantes que usam IA para gerar código (sem usá-la para tirar dúvidas) diferem, quanto à confiança em programar sem IA, dos que a usam para tirar dúvidas e obter explicações (sem gerar código)?
 \end{itemize}
 
-\textbf{Métricas.} Confiança percebida (escore médio dos itens Q10--Q13) e dependência percebida (escore médio dos itens Q14--Q17, com Q17 invertido), ambos em escala Likert de 5 pontos; frequência de uso (Q6); principal uso (Q9); período do curso (Q3).
+\textbf{Métricas.} Confiança percebida (escore médio dos itens Q10--Q13) e dependência percebida (escore médio dos itens Q14--Q17, com Q17 invertido), ambos em escala Likert de 5 pontos; frequência de uso (Q6); usos da IA (Q9, múltipla escolha); período do curso (Q3).
 
 \section{População e amostragem}
 
@@ -68,7 +68,7 @@ No pior caso ($p = 0{,}5$), com $n = 50$ obtém-se $e \approx \pm 13{,}9$ pontos
 
 \section{Questionário com rastreabilidade}
 
-O instrumento é um formulário web próprio, com uma pergunta por tela, que grava as respostas em um banco de dados. Ele não coleta nome, e-mail, endereço IP, \emph{user-agent} nem qualquer identificador: registra apenas as respostas, a data e hora do envio e o tempo de preenchimento. Para evitar respostas repetidas, o site grava no próprio aparelho do participante um marcador (cookie e armazenamento local do navegador) após o envio, sem relação com as respostas e sem identificar a pessoa; quem já respondeu vê um aviso e só prossegue se indicar que é outra pessoa. Não há limite por rede, pois muitos participantes podem compartilhar o mesmo Wi-Fi. Itens de concordância usam escala Likert de 5 pontos (1 = Discordo totalmente a 5 = Concordo totalmente). Os itens de confiança (Q10--Q13) e de dependência (Q14--Q17) são apresentados de forma alternada entre os dois construtos, com a pergunta de atenção (Q18) inserida entre eles, e não em blocos separados. Os códigos Q1--Q19 são identificadores fixos de cada item, independentes da posição na tela, e são usados como chaves nos dados brutos.
+O instrumento é um formulário web próprio, com uma pergunta por tela, que grava as respostas em um banco de dados. Ele não coleta nome, e-mail, endereço IP, \emph{user-agent} nem qualquer identificador: registra apenas as respostas, a data e hora do envio e o tempo de preenchimento. Para evitar respostas repetidas, o site grava no próprio aparelho do participante um marcador (cookie e armazenamento local do navegador) após o envio, sem relação com as respostas e sem identificar a pessoa; quem já respondeu vê um aviso e só prossegue se indicar que é outra pessoa. Não há limite por rede, pois muitos participantes podem compartilhar o mesmo Wi-Fi. Itens de concordância usam escala Likert de 5 pontos (1 = Discordo totalmente, 3 = Depende, 5 = Concordo totalmente). Os itens de confiança (Q10--Q13) e de dependência (Q14--Q17) são apresentados de forma alternada entre os dois construtos, e não em blocos separados, e a pergunta de atenção (Q18) vem logo depois deles. A posição de cada item na tela coincide com o seu código (Q1 é a 1ª tela, Q18 é a 18ª), exceto pela ordem alternada dos itens Q10--Q17. Os códigos Q1--Q19 são identificadores fixos de cada item, independentes da posição na tela, e são usados como chaves nos dados brutos.
 
 \textbf{Consentimento e filtros.} O questionário só é liberado após o aceite do termo de consentimento. Q1 (é estudante de graduação em computação ou área afim?) e Q2 (já usou IA para estudar programação?) são filtros de elegibilidade: quem responde ``Não'' em qualquer um deles tem a participação encerrada.
 
@@ -86,7 +86,7 @@ Q5 & Há quanto tempo programa? (faixas) & Ordinal & Filtro \\
 Q6 & Frequência de uso de IA nos estudos (5 níveis) & Ordinal & QP1 \\
 Q7 & Ferramentas usadas (múltipla escolha) & Nominal & Descritivo \\
 Q8 & Os professores permitem ou incentivam o uso de IA nas disciplinas? (não permitem / com restrições / permitem ou incentivam / varia conforme a disciplina) & Nominal & Descritivo e filtro (sem QP) \\
-Q9 & Principal uso (gerar código / dúvidas e explicações / depurar / outro) & Nominal & QP3 \\
+Q9 & Usos da IA, múltipla escolha (gerar código / dúvidas e explicações / corrigir erros / gerar testes / outro) & Nominal & QP3 \\
 Q10 & Resolvo um problema do meu nível sem consultar IA. & Ordinal & QP1, QP3 \\
 Q11 & Sinto-me seguro(a) para uma prova de programação sem ferramentas. & Ordinal & QP1, QP3 \\
 Q12 & Consigo depurar meu código sem pedir ajuda à IA. & Ordinal & QP1, QP3 \\
@@ -132,7 +132,7 @@ As respostas do pré-teste não entram na amostra final.
 \midrule
 QP1 & Correlação de Spearman (Q6 $\times$ escore de confiança) & $\rho$ de Spearman & IC de 95\% por \emph{bootstrap} \\
 QP2 & Kruskal-Wallis (escore de dependência por grupo de Q3) & $\varepsilon^2$ & \emph{Post hoc}: Dunn \\
-QP3 & Mann-Whitney (escore de confiança por principal uso em Q9: gerar código $\times$ dúvidas/explicações) & $r$ de correlação bisserial por postos & Respostas ``depurar'' e ``outro'' ficam fora desta comparação \\
+QP3 & Mann-Whitney (escore de confiança em Q9: marcou gerar código sem dúvidas $\times$ marcou dúvidas sem gerar código) & $r$ de correlação bisserial por postos & Quem marcou ambas ou nenhuma dessas duas opções fica fora desta comparação; o $n$ de cada grupo é reportado \\
 \bottomrule
 \end{tabularx}
 \end{center}

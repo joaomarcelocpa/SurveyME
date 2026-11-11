@@ -29,8 +29,23 @@ def item_map(q: dict) -> dict:
 
 def normalize_answers(answers: dict) -> dict:
     out = dict(answers)
-    if isinstance(out.get("Q7"), list):
-        out["Q7"] = "|".join(out["Q7"])
+    for k in ("Q7", "Q9"):  # multipla escolha: guardada como texto "a|b" (ordenado)
+        if isinstance(out.get(k), list):
+            out[k] = "|".join(sorted(out[k]))
+    return out
+
+
+def tem_opcao(s: pd.Series, valor: str) -> pd.Series:
+    """True onde a resposta de multipla escolha (texto "a|b") inclui `valor`."""
+    return s.fillna("").astype(str).str.split("|").apply(lambda v: valor in v)
+
+
+def grupo_exclusivo(s: pd.Series, a: str, b: str) -> pd.Series:
+    """Grupo `a` = marcou a e nao b; grupo `b` = marcou b e nao a; os demais ficam fora (NaN)."""
+    ta, tb = tem_opcao(s, a), tem_opcao(s, b)
+    out = pd.Series(np.nan, index=s.index, dtype=object)
+    out[ta & ~tb] = a
+    out[tb & ~ta] = b
     return out
 
 
@@ -246,7 +261,10 @@ def answer_rqs(df: pd.DataFrame, q: dict) -> pd.DataFrame:
             det = f"H = {r['H']:.2f}"
         else:
             a, b = rq["groups"]
-            r = mannwhitney(d[rq["y"]], d[rq["group"]], a, b)
+            g = d[rq["group"]]
+            if item_map(q)[rq["group"]]["type"] == "multi":
+                g = grupo_exclusivo(g, a, b)
+            r = mannwhitney(d[rq["y"]], g, a, b)
             nome, ef, ef_nome = "Mann-Whitney", r["efeito"], "r (bisserial por postos)"
             det = f"n = {r['n1']} × {r['n2']}"
         linhas.append({"QP": rq["id"], "teste": nome, "n": r["n"], "p": r["p"], "efeito_nome": ef_nome,

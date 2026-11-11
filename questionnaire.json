@@ -18,7 +18,7 @@
     },
     {
       "id": "QP3",
-      "text": "Estudantes que usam IA principalmente para gerar código diferem, quanto à confiança, dos que a usam principalmente para tirar dúvidas e obter explicações?",
+      "text": "Estudantes que usam IA para gerar código (sem usá-la para tirar dúvidas) diferem, quanto à confiança, dos que a usam para tirar dúvidas e obter explicações (sem gerar código)?",
       "test": "mannwhitney",
       "group": "Q9",
       "groups": [
@@ -64,11 +64,11 @@
     "Q14",
     "Q11",
     "Q15",
-    "Q18",
     "Q12",
     "Q16",
     "Q13",
     "Q17",
+    "Q18",
     "Q19"
   ],
   "items": [
@@ -292,12 +292,12 @@
     },
     {
       "id": "Q9",
-      "text": "Para que você usa a IA com mais frequência nos estudos?",
-      "type": "single",
+      "text": "Para que você usa a IA nos estudos? Marque todas que se aplicam.",
+      "type": "multi",
       "rq": [
         "QP3"
       ],
-      "metric": "Principal uso de IA",
+      "metric": "Usos da IA (descritivo; QP3 compara gerar código × tirar dúvidas)",
       "scale": "nominal",
       "role": "profile",
       "options": [
@@ -310,8 +310,12 @@
           "label": "Tirar dúvidas e pedir explicações"
         },
         {
-          "value": "depurar",
-          "label": "Depurar erros"
+          "value": "corrigir_erros",
+          "label": "Corrigir erros"
+        },
+        {
+          "value": "gerar_testes",
+          "label": "Gerar testes automatizados"
         },
         {
           "value": "outro",
@@ -344,7 +348,7 @@
         },
         {
           "value": 3,
-          "label": "Neutro"
+          "label": "Depende"
         },
         {
           "value": 4,
@@ -380,7 +384,7 @@
         },
         {
           "value": 3,
-          "label": "Neutro"
+          "label": "Depende"
         },
         {
           "value": 4,
@@ -416,7 +420,7 @@
         },
         {
           "value": 3,
-          "label": "Neutro"
+          "label": "Depende"
         },
         {
           "value": 4,
@@ -452,7 +456,7 @@
         },
         {
           "value": 3,
-          "label": "Neutro"
+          "label": "Depende"
         },
         {
           "value": 4,
@@ -487,7 +491,7 @@
         },
         {
           "value": 3,
-          "label": "Neutro"
+          "label": "Depende"
         },
         {
           "value": 4,
@@ -522,7 +526,7 @@
         },
         {
           "value": 3,
-          "label": "Neutro"
+          "label": "Depende"
         },
         {
           "value": 4,
@@ -557,7 +561,7 @@
         },
         {
           "value": 3,
-          "label": "Neutro"
+          "label": "Depende"
         },
         {
           "value": 4,
@@ -592,7 +596,7 @@
         },
         {
           "value": 3,
-          "label": "Neutro"
+          "label": "Depende"
         },
         {
           "value": 4,
@@ -626,7 +630,7 @@
         },
         {
           "value": 3,
-          "label": "Neutro"
+          "label": "Depende"
         },
         {
           "value": 4,
