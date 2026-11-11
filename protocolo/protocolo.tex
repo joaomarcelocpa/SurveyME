@@ -67,9 +67,9 @@ No pior caso ($p = 0{,}5$), com $n = 50$ obtém-se $e \approx \pm 13{,}9$ pontos
 
 \section{Questionário com rastreabilidade}
 
-O instrumento será aplicado no Google Forms, sem coleta de e-mail e sem exigir login. Itens de concordância usam escala Likert de 5 pontos (1 = Discordo totalmente a 5 = Concordo totalmente). Os itens de confiança (Q10--Q13) e de dependência (Q14--Q17) são apresentados de forma alternada entre os dois construtos, e não em blocos separados. Os códigos Q1--Q19 são identificadores fixos de cada item, independentes da posição na tela, e são usados também nas colunas dos dados brutos.
+O instrumento é um formulário web próprio, com uma pergunta por tela, que grava as respostas em um banco de dados. Ele não coleta nome, e-mail, endereço IP, \emph{user-agent} nem qualquer identificador: registra apenas as respostas, a data e hora do envio e o tempo de preenchimento. Itens de concordância usam escala Likert de 5 pontos (1 = Discordo totalmente a 5 = Concordo totalmente). Os itens de confiança (Q10--Q13) e de dependência (Q14--Q17) são apresentados de forma alternada entre os dois construtos, com a pergunta de atenção (Q18) inserida entre eles, e não em blocos separados. Os códigos Q1--Q19 são identificadores fixos de cada item, independentes da posição na tela, e são usados como chaves nos dados brutos.
 
-\textbf{Consentimento e filtros (encerram o formulário se a resposta for ``Não'').} Aceite do termo de consentimento; Q1 (é estudante de graduação em computação ou área afim?); Q2 (já usou IA para estudar programação?).
+\textbf{Consentimento e filtros.} O questionário só é liberado após o aceite do termo de consentimento. Q1 (é estudante de graduação em computação ou área afim?) e Q2 (já usou IA para estudar programação?) são filtros de elegibilidade: quem responde ``Não'' em qualquer um deles tem a participação encerrada.
 
 \begin{center}
 \small
@@ -100,11 +100,11 @@ Q19 & Como a IA mudou sua forma de aprender a programar? (aberta, opcional) & Te
 \end{tabularx}
 \end{center}
 
-\textbf{Construtos.} \emph{Confiança percebida} (Q10--Q13) e \emph{dependência percebida} (Q14--Q17) são medidos por quatro itens cada, e a consistência interna de cada um será avaliada pelo alfa de Cronbach. O texto completo do questionário, com as opções de resposta de cada item, acompanha este protocolo no repositório do grupo (arquivo \texttt{questionario.md}).
+\textbf{Construtos.} \emph{Confiança percebida} (Q10--Q13) e \emph{dependência percebida} (Q14--Q17) são medidos por quatro itens cada, e a consistência interna de cada um será avaliada pelo alfa de Cronbach. O texto completo do questionário, com as opções de resposta de cada item, acompanha este protocolo no repositório do grupo (arquivo \texttt{questionario.md}), junto com o instrumento em formato estruturado (\texttt{questionnaire.json}), usado pelo formulário e pelo painel de análise.
 
 \section{Pré-teste}
 
-O questionário será aplicado a \textbf{3 estudantes de engenharia de software do 6º período,} antes da divulgação, com observação de dúvidas, tempo de resposta e ambiguidades.
+O questionário foi aplicado a \textbf{3 estudantes de engenharia de software do 6º período} antes da divulgação, com observação de dúvidas, tempo de resposta e ambiguidades.
 
 \begin{itemize}
   \item \textbf{Data do pré-teste:} 10/11/2026.
@@ -116,7 +116,7 @@ As respostas do pré-teste não entram na amostra final.
 
 \section{Plano de análise}
 
-\textbf{Preparação dos dados.} Serão descartadas as respostas que (i) não marquem a opção esperada na pergunta de atenção Q18, (ii) não atendam aos filtros de elegibilidade, (iii) estejam incompletas nos itens obrigatórios ou (iv) sejam duplicadas evidentes. Cada descarte será registrado com o motivo. O item Q17 será invertido ($6 - x$) antes do cálculo dos escores.
+\textbf{Preparação dos dados.} Serão descartadas as respostas que (i) não marquem a opção esperada na pergunta de atenção Q18, (ii) não atendam aos filtros de elegibilidade, (iii) estejam incompletas nos itens obrigatórios, (iv) tenham tempo de preenchimento inferior a 60 segundos, limiar definido antes da coleta a partir do tempo médio do pré-teste (cerca de 5 minutos), ou (v) sejam duplicadas, isto é, tenham conteúdo idêntico ao de outra resposta enviada em até 10 minutos (mantida a primeira). Nenhuma resposta é apagada do banco: o descarte é calculado na análise, com o motivo registrado, e o efeito de cada critério é reportado no painel. O item Q17 será invertido ($6 - x$) antes do cálculo dos escores.
 
 \textbf{Estatística descritiva.} Frequências e percentuais para variáveis nominais e ordinais; mediana e intervalo interquartil para escores; gráficos de barras divergentes para os itens Likert. Para QP2 e QP3, os níveis do fator serão comparados com a medida de tendência central de cada grupo. As variáveis Q4, Q5 e Q8 serão usadas de forma descritiva e como segmentos de filtro no painel.
 
@@ -145,9 +145,9 @@ QP3 & Mann-Whitney (escore de confiança por principal uso em Q9: gerar código 
 \section{Ética e LGPD}
 
 \begin{itemize}
-  \item \textbf{Consentimento.} A primeira página do formulário traz o termo de consentimento: objetivo acadêmico, tempo estimado, participação voluntária, anonimato e possibilidade de desistir a qualquer momento fechando a página. Sem o aceite, o formulário se encerra.
-  \item \textbf{Dados coletados.} Nenhum dado pessoal direto (nome, e-mail, matrícula, telefone, IP ou rede social). A coleta de e-mail e o login estão desativados. Variáveis de perfil são agrupadas em faixas e categorias para reduzir o risco de reidentificação, e não se pergunta o curso, a instituição nem a cidade do participante.
-  \item \textbf{Armazenamento.} Os dados brutos ficam em pasta de acesso restrito aos integrantes do grupo e ao professor, e \emph{não} são publicados no repositório do GitHub. Serão mantidos apenas até o fim da disciplina, 31/12/2026.
+  \item \textbf{Consentimento.} A tela inicial traz o termo de consentimento: finalidade acadêmica, anonimato, voluntariedade, forma de armazenamento e contato. O questionário só é liberado após o aceite, e a pessoa pode desistir a qualquer momento fechando a página.
+  \item \textbf{Dados coletados.} Nenhum dado pessoal direto (nome, e-mail, matrícula, telefone ou rede social). O endereço IP e o \emph{user-agent} não são gravados; o IP pode ser usado apenas de forma transitória, em memória e com \emph{hash}, na proteção contra envios automatizados. O banco guarda as respostas, a data e hora do envio e o tempo de preenchimento. Variáveis de perfil são agrupadas em faixas e categorias para reduzir o risco de reidentificação, e não se pergunta o curso, a instituição nem a cidade do participante.
+  \item \textbf{Armazenamento.} As respostas ficam em banco de dados em nuvem (PostgreSQL) com acesso restrito ao grupo e ao professor. A tabela de respostas é imutável (alterações e remoções são bloqueadas) e o painel de análise usa um usuário somente leitura. Os dados brutos \emph{não} são publicados no repositório do GitHub e serão mantidos apenas até o fim da disciplina, 31/12/2026.
   \item \textbf{Divulgação dos resultados.} Apenas de forma agregada. Evidências (capturas de tela) não exibirão dados pessoais, e nomes de quem compartilhar a divulgação serão ocultados.
   \item \textbf{Normas institucionais.} O grupo seguirá todas as orientações da instituição para pesquisas com pessoas.
 \end{itemize}
@@ -164,7 +164,8 @@ Autosseleção e não resposta & Quem responde pode ter mais interesse ou opini�
 Viés de canal / conveniência & A amostra reflete os grupos onde o link circula. & Usar vários canais e comparar o perfil por segmento. \\
 Desejabilidade social & Estudantes podem subestimar o uso de IA por receio de parecer que ``colam''. & Garantir e declarar o anonimato; usar linguagem neutra nos itens; registrar a política dos professores (Q8) para interpretar possível subnotificação. \\
 Autorrelato & Confiança e dependência são percebidas, não medem desempenho real. & Declarar como limitação; conclusões restritas a percepções. \\
-Respostas descuidadas & Marcações automáticas sem leitura. & Pergunta de atenção (Q18), itens alternados entre os construtos e item invertido (Q17). \\
+Respostas descuidadas & Marcações automáticas sem leitura. & Pergunta de atenção (Q18), tempo mínimo de preenchimento (60 s), campo-isca (\emph{honeypot}), itens alternados entre os construtos e item invertido (Q17). \\
+Envios duplicados ou automatizados & O mesmo participante pode enviar mais de uma vez, ou haver envios automatizados. & Descarte de respostas idênticas em até 10 minutos, tempo mínimo e campo-isca. Envios repetidos deliberados não podem ser impedidos sem identificar o participante, e isso é declarado como limitação. \\
 Validade de construto & Poucos itens podem não representar o construto. & Quatro itens por construto, pré-teste e alfa de Cronbach. \\
 Validade de conclusão & Amostra pequena e múltiplos testes aumentam falsos positivos. & Testes não paramétricos, tamanho de efeito, correção de Holm e margem de erro reportada. \\
 Causalidade & Survey observa associações, não causas. & Redação das conclusões e do objetivo sem termos causais. \\
@@ -178,7 +179,7 @@ Causalidade & Survey observa associações, não causas. & Redação das conclus
   \item \textbf{Canais:} \textbf{WhatsApp} (grupos de turmas, de cursos e de comunidades de programação; mensagens diretas) e \textbf{Instagram} (\emph{stories} e publicações dos integrantes, perfis de centros acadêmicos e de comunidades de computação, mensagens diretas). Cada integrante também repassa o link a conhecidos que estudam computação, com pedido de repasse (bola de neve).
   \item \textbf{Mensagem padrão:} apresenta o grupo, o objetivo, o tempo (cerca de 5 minutos), o anonimato e o link.
   \item \textbf{Período de coleta:} de 13/11/2026 a 23/11/2026, com reforços da divulgação em dias e horários diferentes.
-  \item \textbf{Registro:} capturas datadas da divulgação (sem dados pessoais) e exportação bruta do formulário com data e hora de cada resposta.
+  \item \textbf{Registro:} capturas datadas da divulgação (sem dados pessoais) e exportação bruta do banco de dados (CSV gerado pelo painel) com data e hora de cada resposta, além do acesso ao painel de análise durante a apresentação.
   \item \textbf{Regra de início:} a divulgação só começa após a entrega deste protocolo, com data comprovada pelo histórico do repositório do grupo e pelo envio na plataforma da disciplina.
 \end{itemize}
 
