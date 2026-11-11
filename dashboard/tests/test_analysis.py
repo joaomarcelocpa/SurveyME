@@ -63,3 +63,17 @@ def test_mannwhitney_efeito_sinal():
     g = pd.Series(["a", "a", "a", "b", "b", "b"])
     r = an.mannwhitney(y, g, "a", "b")
     assert r["efeito"] == pytest.approx(1.0)
+
+
+def test_quase_duplicata_sinalizada_e_identica_nao():
+    rows = seed_dev.gerar(3)
+    a = rows[0]["answers"]
+    quase = {**a, "Q10": min(5, a["Q10"] + 1)}
+    ident = dict(a)
+    t0 = rows[0]["created_at"]
+    mk = lambda ans, m: {"id": f"id{m}", "created_at": t0 + pd.Timedelta(minutes=m), "form_version": "1", "consent": True, "answers": ans}
+    df = an.rows_to_df([mk(a, 0), mk(quase, 5), mk({**a, "Q9": "outro", "Q10": 1}, 6)])
+    f = an.flag_near_duplicates(df, Q)
+    assert f.tolist() == [False, a["Q10"] < 5, False]
+    df2 = an.rows_to_df([mk(a, 0), mk(ident, 5)])
+    assert not an.flag_near_duplicates(df2, Q).any()

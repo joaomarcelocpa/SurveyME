@@ -96,6 +96,31 @@ def classify(df: pd.DataFrame, q: dict, min_duration: float | None = None) -> pd
     return d
 
 
+def flag_near_duplicates(df: pd.DataFrame, q: dict, janela_min: int = 60, tolerancia: int = 2) -> pd.Series:
+    """Sinaliza (sem descartar) respostas quase iguais a outra anterior: mesmo perfil (itens de perfil),
+    escalas de construto com soma de diferencas absolutas <= `tolerancia`, em ate `janela_min` minutos.
+    Casos identicos ja sao descartados como `duplicada`; aqui so entram os quase iguais."""
+    perfil = [i["id"] for i in q["items"] if i.get("role") == "profile" and i["id"] in df]
+    escalas = [iid for c in q["constructs"].values() for iid in c["items"] if iid in df]
+    flag = pd.Series(False, index=df.index)
+    if df.empty or "created_at" not in df:
+        return flag
+    d = df.sort_values("created_at")
+    num = d[escalas].apply(pd.to_numeric, errors="coerce")
+    chave = d[perfil].fillna("").astype(object).astype(str).apply(lambda r: "|".join(r), axis=1)
+    for _, grupo in d.groupby(chave):
+        idx = list(grupo.index)
+        for pos, j in enumerate(idx):
+            for i in idx[:pos]:
+                dt = (d.loc[j, "created_at"] - d.loc[i, "created_at"]).total_seconds() / 60
+                if dt > janela_min:
+                    continue
+                dif = (num.loc[j] - num.loc[i]).abs().sum()
+                if 0 < dif <= tolerancia:
+                    flag.loc[j] = True
+    return flag
+
+
 def add_scores(df: pd.DataFrame, q: dict) -> pd.DataFrame:
     d = df.copy()
     items = item_map(q)

@@ -116,6 +116,11 @@ def pagina_painel():
             st.subheader("Motivos de descarte")
             st.dataframe(mot.fillna(0).astype(int))
             st.caption(f"Uma resposta pode ter mais de um motivo; o principal segue a ordem da tabela. Tempo mínimo: {min_n} s.")
+        sus = validos[an.flag_near_duplicates(validos, q)]
+        if len(sus):
+            st.subheader("Sinalizadas para revisão (não descartadas)")
+            st.caption("Respostas válidas quase iguais a outra enviada pouco antes (mesmo perfil, escalas com diferença total de até 2 pontos, em até 60 min). Revise e, se confirmar duplicidade, registre em deviations.md.")
+            st.dataframe(sus[["id", "created_at"]], hide_index=True)
         st.subheader("Perfil (amostra filtrada)")
         n = len(filtrado)
         for iid in PERFIL:
