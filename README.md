@@ -39,6 +39,7 @@ Monorepo com duas aplicações e uma fonte única do instrumento.
 | `dashboard/` | Painel de análise (Streamlit, pandas, scipy, pingouin, plotly) |
 | `db/` | Migrations SQL, script do usuário somente leitura e tabela de desenvolvimento |
 | `scripts/traceability.py` | Gera a tabela de rastreabilidade (item, QP, métrica, escala) em Markdown |
+| `integrations/google-sheets/` | Receptor opcional (Apps Script) que mantém uma cópia das respostas em planilha |
 | `deviations.md` | Desvios em relação ao protocolo (exibido no painel) |
 
 ### Banco (Neon)
