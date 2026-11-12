@@ -1,0 +1,71 @@
+name: Deploy (Vercel)
+
+# Testa e publica o site (web/) na Vercel a cada push na main, ou manualmente em Actions > Run workflow.
+# Segredos necessarios no repositorio: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID.
+# As variaveis do site (DATABASE_URL, SURVEY_OPEN, ...) ficam no projeto da Vercel, nao aqui.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-vercel-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Formulario (tipos e testes)
+        working-directory: web
+        run: |
+          npm ci
+          npx tsc --noEmit
+          npm test
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: dashboard/requirements.txt
+      - name: Dashboard (testes)
+        working-directory: dashboard
+        run: |
+          pip install -r requirements.txt
+          python -m pytest -q tests
+
+  deploy:
+    needs: testes
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Verifica segredos
+        run: |
+          for v in VERCEL_ORG_ID VERCEL_PROJECT_ID VERCEL_TOKEN; do
+            if [ -z "${!v}" ]; then echo "Segredo $v nao configurado"; exit 1; fi
+          done
+      # Roda na raiz do repositorio: o build do formulario copia ../questionnaire.json.
+      - name: Baixar configuracao do projeto
+        run: npx --yes vercel@65 pull --yes --environment=production --token="$VERCEL_TOKEN"
+      - name: Build
+        run: npx --yes vercel@65 build --prod --token="$VERCEL_TOKEN"
+      - name: Deploy
+        run: npx --yes vercel@65 deploy --prebuilt --prod --token="$VERCEL_TOKEN"
