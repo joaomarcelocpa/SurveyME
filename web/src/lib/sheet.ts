@@ -2,7 +2,7 @@ import { itemsInOrder, type Item } from "./questionnaire";
 
 // Copia secundaria das respostas para uma planilha do Google, no formato de uma planilha do Google Forms:
 // uma linha por resposta, uma coluna por pergunta, "Carimbo de data/hora" na primeira coluna.
-// O banco (PostgreSQL) continua sendo a fonte oficial; falha aqui nunca impede nem desfaz o envio.
+// O banco (Neon) continua sendo a fonte oficial; falha aqui nunca impede nem desfaz o envio.
 
 export const HEADERS: string[] = [
   "Carimbo de data/hora",

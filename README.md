@@ -42,7 +42,7 @@ Monorepo com duas aplicações e uma fonte única do instrumento.
 | `integrations/google-sheets/` | Receptor opcional (Apps Script) que mantém uma cópia das respostas em planilha |
 | `deviations.md` | Desvios em relação ao protocolo (exibido no painel) |
 
-### Banco (PostgreSQL, ex.: Render)
+### Banco (Neon)
 
 ```bash
 psql "$DATABASE_URL_ADMIN" -f db/migrations/001_responses.sql
@@ -63,7 +63,7 @@ npm test
 
 | Variável | Descrição |
 |---|---|
-| `DATABASE_URL` | String de conexão do PostgreSQL (no Render, a *External Database URL*), com permissão de INSERT em `responses` |
+| `DATABASE_URL` | String de conexão *pooled* do Neon, com permissão de INSERT em `responses` |
 | `SURVEY_OPEN` | `false` mostra "Pesquisa ainda não aberta" e recusa gravações; use `true` somente após a entrega do protocolo |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | Contato opcional exibido no termo de consentimento |
 

@@ -1,4 +1,4 @@
-"""Leitura dos dados brutos: PostgreSQL (usuario somente leitura) ou CSV local de desenvolvimento."""
+"""Leitura dos dados brutos: Neon (usuario somente leitura) ou CSV local de desenvolvimento."""
 from __future__ import annotations
 
 import os

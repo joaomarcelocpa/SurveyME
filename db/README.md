@@ -7,4 +7,4 @@ Migrations em ordem numerica; aplique com `psql "$DATABASE_URL_ADMIN" -f <arquiv
 - `create_readonly_user.sql`: usuario `survey_ro` (somente SELECT).
 - `dev/responses_dev.sql`: tabela para dados sinteticos, **apenas local**.
 
-O script usa o banco ao qual voce esta conectado (`current_database()`); nao precisa editar o nome.
+Ajuste o nome do banco em `create_readonly_user.sql` se nao for `neondb`.
