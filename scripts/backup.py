@@ -96,10 +96,18 @@ def write_backup(rows: list[dict], d: Path, now: datetime | None = None) -> dict
     if manifest and manifest[-1]["estado_hash"] == estado:
         return None
     now = now or datetime.now(timezone.utc)
-    nome = f"responses-{now.strftime('%Y%m%dT%H%M%SZ')}.jsonl"
     conteudo = "".join(canon_json(r) + "\n" for r in rows)
-    caminho = d / nome
-    caminho.write_text(conteudo, encoding="utf-8")
+    base = f"responses-{now.strftime('%Y%m%dT%H%M%S')}-{now.microsecond:06d}Z"
+    nome, k = f"{base}.jsonl", 1
+    while True:  # nunca sobrescreve um backup existente
+        caminho = d / nome
+        try:
+            with open(caminho, "x", encoding="utf-8") as f:
+                f.write(conteudo)
+            break
+        except FileExistsError:
+            k += 1
+            nome = f"{base}-{k}.jsonl"
     caminho.chmod(0o600)
     entrada = {"arquivo": nome, "gerado_em": now.isoformat(), "total": len(rows),
                "max_created_at": max((canon_row(r)["created_at"] for r in rows), default=None),

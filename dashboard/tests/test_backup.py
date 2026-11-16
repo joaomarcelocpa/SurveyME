@@ -82,3 +82,13 @@ def test_restore_simulacao_nao_insere_e_confere_hash(tmp_path, capsys):
     assert "simulacao" in capsys.readouterr().out
     (tmp_path / e["arquivo"]).write_text("{}\n", encoding="utf-8")
     assert restore.main([str(tmp_path / e["arquivo"])]) == 1
+
+
+def test_dois_backups_no_mesmo_instante_nao_se_sobrescrevem(tmp_path):
+    instante = datetime(2026, 11, 16, 12, 0, 0, tzinfo=timezone.utc)
+    a = backup.write_backup(rows(3), tmp_path, instante)
+    b = backup.write_backup(rows(4), tmp_path, instante)
+    assert a["arquivo"] != b["arquivo"]
+    assert len(backup.read_backup(tmp_path / a["arquivo"])) == 3
+    assert len(backup.read_backup(tmp_path / b["arquivo"])) == 4
+    assert restore.check_file(tmp_path / a["arquivo"]) == []
