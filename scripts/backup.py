@@ -159,6 +159,10 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--verify-only", action="store_true", help="so verifica, sem gravar backup novo")
     a = ap.parse_args(argv)
 
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from envfile import load_env
+
+    load_env(Path.home() / ".survey-backup.env", Path(__file__).resolve().parent.parent / "dashboard" / ".env")
     url = os.environ.get("DATABASE_URL_RO")
     if not url:
         print("DATABASE_URL_RO nao definida", file=sys.stderr)

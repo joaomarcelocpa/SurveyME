@@ -74,8 +74,7 @@ Deploy: importe o repositório na Vercel com *Root Directory* `web` (mantenha ha
 ```bash
 cd dashboard
 python -m venv .venv && .venv/bin/pip install -r requirements.txt
-cp .env.example .env   # DATABASE_URL_RO com o usuário survey_ro
-set -a; . ./.env; set +a
+cp .env.example .env   # preencha DATABASE_URL_RO (usuário survey_ro); o painel e o backup leem este arquivo sozinhos
 .venv/bin/streamlit run app.py
 .venv/bin/python -m pytest tests
 ```

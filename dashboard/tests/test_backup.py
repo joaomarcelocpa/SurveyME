@@ -92,3 +92,15 @@ def test_dois_backups_no_mesmo_instante_nao_se_sobrescrevem(tmp_path):
     assert len(backup.read_backup(tmp_path / a["arquivo"])) == 3
     assert len(backup.read_backup(tmp_path / b["arquivo"])) == 4
     assert restore.check_file(tmp_path / a["arquivo"]) == []
+
+
+def test_envfile_le_valores_sem_sobrescrever_o_ambiente(tmp_path, monkeypatch):
+    import envfile
+    f = tmp_path / ".env"
+    f.write_text("# c\nA=1\nexport B='x y'\nC=\"z\"\nD=v # nota\nINVALIDA\nPRESA=do_arquivo\n", encoding="utf-8")
+    assert envfile.parse(f.read_text(encoding="utf-8")) == {"A": "1", "B": "x y", "C": "z", "D": "v", "PRESA": "do_arquivo"}
+    monkeypatch.setenv("PRESA", "do_ambiente")
+    monkeypatch.delenv("A", raising=False)
+    envfile.load_env(f, tmp_path / "nao-existe")
+    import os
+    assert os.environ["A"] == "1" and os.environ["PRESA"] == "do_ambiente"

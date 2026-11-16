@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -16,6 +17,10 @@ import monitor
 import presentation
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts"))
+from envfile import load_env  # noqa: E402
+
+load_env(Path(__file__).resolve().parent / ".env")  # DATABASE_URL_RO etc., sem precisar exportar
 st.set_page_config(page_title="Survey: IA no aprendizado de programação", layout="wide")
 q = an.load_questionnaire()
 items = an.item_map(q)

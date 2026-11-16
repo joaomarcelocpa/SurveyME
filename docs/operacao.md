@@ -18,6 +18,8 @@ Os backups guardam **todas** as respostas (inclusive as que serão descartadas n
 
 ### Preparação (uma vez)
 
+Se já existe `dashboard/.env` com a `DATABASE_URL_RO` (veja o README), o backup o usa sozinho e basta definir a pasta (`SURVEY_BACKUP_DIR`) ou aceitar o padrão `~/survey-backups`. O arquivo `~/.survey-backup.env` abaixo é opcional e tem precedência sobre ele.
+
 ```bash
 mkdir -p ~/survey-backups && chmod 700 ~/survey-backups
 cat > ~/.survey-backup.env <<'ENV'
