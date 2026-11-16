@@ -11,6 +11,9 @@ import streamlit as st
 import analysis as an
 from data_source import load_raw
 from export import build_workbook
+import charts
+import monitor
+import presentation
 
 ROOT = Path(__file__).resolve().parent.parent
 st.set_page_config(page_title="Survey: IA no aprendizado de programação", layout="wide")
@@ -52,27 +55,10 @@ def pagina_metodologia():
 
 
 def barras_divergentes(df: pd.DataFrame, iids: list[str]):
-    d = an.diverging(df, q, iids)
-    if d.empty:
+    fig = charts.fig_diverging(df, q, iids)
+    if fig is None:
         st.info("Sem dados.")
         return
-    cores = {"1": "#b2182b", "2": "#ef8a62", "3": "#cfcfcf", "4": "#67a9cf", "5": "#2166ac"}
-    fig = go.Figure()
-    for v in ["1", "2", "3", "4", "5"]:
-        if v == "3":
-            left, width = -d["3"] / 2, d["3"]
-        elif v in ("1", "2"):
-            # empilha para a esquerda a partir do neutro
-            off = d["3"] / 2 + (d["2"] if v == "1" else 0)
-            left, width = -(off + d[v]), d[v]
-        else:
-            off = d["3"] / 2 + (d["4"] if v == "5" else 0)
-            left, width = off, d[v]
-        fig.add_bar(y=d["item"], x=width, base=left, orientation="h", name=rotulo("Q10", int(v)),
-                    marker_color=cores[v], customdata=d[v], hovertemplate="%{y}: %{customdata:.0f}%<extra>" + rotulo("Q10", int(v)) + "</extra>")
-    fig.update_layout(barmode="overlay", xaxis_title="% de respostas", yaxis=dict(autorange="reversed"),
-                      height=60 + 55 * len(d), legend_orientation="h", margin=dict(l=10, r=10, t=10, b=10))
-    fig.add_vline(x=0, line_color="#444")
     st.plotly_chart(fig, width="stretch")
 
 
@@ -225,5 +211,154 @@ def pagina_painel():
             st.error(f"Não foi possível gerar a planilha: {type(e).__name__}")
 
 
-pagina = st.sidebar.radio("Página", ["Painel", "Metodologia e desvios"])
-(pagina_painel if pagina == "Painel" else pagina_metodologia)()
+def _fonte_db() -> bool:
+    return not os.environ.get("SURVEY_SOURCE", "db").startswith("csv:")
+
+
+def _sintetico(bruto: pd.DataFrame) -> bool:
+    return os.environ.get("SURVEY_TABLE") == "responses_dev" or "_dev" in bruto.columns or not _fonte_db()
+
+
+def pagina_apresentacao():
+    st.title("Apresentação")
+    try:
+        bruto = carregar()
+    except Exception as e:  # noqa: BLE001
+        st.error(f"Não foi possível ler os dados: {type(e).__name__}")
+        return
+    if bruto.empty:
+        st.info("Ainda não há respostas.")
+        return
+    sint = _sintetico(bruto)
+    slides = presentation.build_slides(bruto, q, sint)
+    if sint:
+        st.warning("DADOS SINTÉTICOS DE DESENVOLVIMENTO. Não representam coleta real.")
+    i = st.session_state.setdefault("slide", 0)
+    i = max(0, min(i, len(slides) - 1))
+    c1, c2, c3 = st.columns([1, 6, 1])
+    if c1.button("← Anterior", disabled=i == 0):
+        st.session_state["slide"] = i - 1
+        st.rerun()
+    if c3.button("Próximo →", disabled=i == len(slides) - 1):
+        st.session_state["slide"] = i + 1
+        st.rerun()
+    c2.progress((i + 1) / len(slides), text=f"Slide {i + 1} de {len(slides)}")
+    sl = slides[i]
+    st.header(sl["titulo"])
+    if sl.get("texto"):
+        st.markdown(f"<p style='font-size:1.25rem'>{sl['texto']}</p>", unsafe_allow_html=True)
+    for item in sl.get("lista", []):
+        st.markdown(f"- {item}")
+    if sl.get("fig") is not None:
+        st.plotly_chart(sl["fig"], width="stretch")
+    st.divider()
+    st.download_button("Baixar versão offline (HTML)", presentation.build_html(slides, sint).encode("utf-8"),
+                       "apresentacao_survey.html", "text/html",
+                       help="Abre em qualquer navegador, sem internet e sem banco. Use as setas para navegar.")
+
+
+@st.fragment(run_every=60)
+def _monitor_corpo():
+    try:
+        bruto = carregar()
+    except Exception as e:  # noqa: BLE001
+        st.error(f"Não foi possível ler os dados: {type(e).__name__}")
+        return
+    if bruto.empty:
+        st.info("Ainda não há respostas.")
+        return
+    if _sintetico(bruto):
+        st.warning("DADOS SINTÉTICOS DE DESENVOLVIMENTO. Não representam coleta real.")
+    todos = an.classify(bruto, q)
+    validos = todos[todos["valida"]]
+    ultima = monitor.local(todos["created_at"]).max()
+
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Recebidas", len(todos))
+    c2.metric("Válidas", len(validos), help=f"Meta {monitor.META}; mínimo {monitor.MINIMO} válidas (protocolo).")
+    c3.metric("Taxa de descarte", f"{100 * (1 - len(validos) / len(todos)):.0f}%")
+    c4.metric("Última resposta", ultima.strftime("%d/%m %H:%M"))
+    st.progress(min(1.0, len(validos) / monitor.META), text=f"{len(validos)} de {monitor.META} (mínimo {monitor.MINIMO})")
+    if len(validos) < monitor.MINIMO:
+        st.caption(f"Faltam {monitor.MINIMO - len(validos)} respostas válidas para o mínimo do protocolo.")
+
+    ac = monitor.acumulado(todos)
+    fig = go.Figure()
+    fig.add_scatter(x=ac["hora"], y=ac["recebidas"], name="recebidas", mode="lines")
+    fig.add_scatter(x=ac["hora"], y=ac["válidas"], name="válidas", mode="lines")
+    fig.add_hline(y=monitor.META, line_dash="dot", annotation_text="meta")
+    fig.add_hline(y=monitor.MINIMO, line_dash="dot", annotation_text="mínimo")
+    fig.update_layout(height=320, margin=dict(l=10, r=10, t=10, b=10), yaxis_title="acumulado", legend_orientation="h")
+    st.subheader("Evolução")
+    st.plotly_chart(fig, width="stretch")
+    st.plotly_chart(go.Figure(go.Bar(x=ac["hora"], y=ac["novas na hora"])).update_layout(
+        height=220, margin=dict(l=10, r=10, t=10, b=10), yaxis_title="respostas por hora"), width="stretch")
+
+    ra = monitor.rajadas(todos)
+    if len(ra):
+        st.warning(f"{len(ra)} rajada(s): 5 ou mais respostas em até 5 minutos. Pode ser compartilhamento em massa ou automação.")
+        st.dataframe(ra, hide_index=True)
+
+    colA, colB = st.columns(2)
+    with colA:
+        st.subheader("Descartes")
+        desc = todos[~todos["valida"]]
+        if len(desc):
+            st.dataframe(desc["motivo"].value_counts().rename("respostas").to_frame())
+        else:
+            st.caption("Nenhuma resposta descartada.")
+        du = monitor.duracao(todos, q["min_duration_seconds"])
+        if du["mediana"] is not None:
+            st.caption(f"Tempo de preenchimento: mediana {du['mediana'] / 60:.1f} min (p10 {du['p10'] / 60:.1f}, p90 {du['p90'] / 60:.1f}); "
+                       f"{du['abaixo_minimo']} abaixo de {q['min_duration_seconds']} s.")
+        sus = an.flag_near_duplicates(validos, q).sum()
+        if sus:
+            st.caption(f"{int(sus)} resposta(s) válida(s) sinalizada(s) como quase-duplicata (revisar no painel).")
+        st.caption("Versões do questionário: " + ", ".join(f"{k} ({v})" for k, v in todos["form_version"].value_counts().items()))
+    with colB:
+        st.subheader("Cobertura por grupo")
+        cob = monitor.cobertura(validos, q)
+        st.dataframe(cob, hide_index=True)
+        st.caption(f"Grupos com menos de {monitor.COBERTURA_MIN} respostas válidas deixam a QP sem poder de detecção.")
+
+    st.subheader("Saúde dos dados")
+    if not _fonte_db():
+        st.caption("Fonte CSV: verificações do banco indisponíveis.")
+        return
+    url = os.environ.get("DATABASE_URL_RO", "")
+    tabela = os.environ.get("SURVEY_TABLE", "responses")
+    h = monitor.saude_banco(url, tabela)
+    if not h["ok"]:
+        st.error(f"Banco inacessível ({h['erro']}).")
+    else:
+        st.success(f"Banco ok: {h['latencia_ms']} ms, {h['total']} respostas.")
+        if tabela == "responses":
+            if not h["travas_ok"]:
+                st.error("Travas de imutabilidade AUSENTES na tabela de respostas. Reaplique db/migrations/002_imutabilidade.sql.")
+            if h["usuario_pode_escrever"]:
+                st.error("O usuário do painel tem permissão de escrita. Use o usuário somente leitura (survey_ro).")
+    estado = monitor.estado_backup(len(todos))
+    if not estado["existe"]:
+        st.warning(f"Nenhum backup encontrado em {estado['pasta']}. Rode scripts/backup.py.")
+    else:
+        msg = f"Último backup: {estado['total']} respostas, há {estado['atrasado_horas']} h (pasta {estado['pasta']})."
+        (st.warning if estado["atrasado_horas"] > 3 else st.info)(msg)
+        if h["ok"]:
+            v = monitor.bk.verify(monitor.bk.fetch_rows(url, tabela), Path(estado["pasta"]))
+            if v["ok"]:
+                st.success(f"Verificação contra o backup: ok ({v['novas']} respostas novas desde então).")
+            else:
+                st.error(f"DIVERGÊNCIA em relação ao backup: {len(v['ausentes'])} ausentes, {len(v['alteradas'])} alteradas. "
+                         "Não sobrescreva backups; investigue.")
+
+
+def pagina_monitor():
+    st.title("Monitoramento da coleta")
+    st.caption("Atualiza sozinho a cada minuto. Horários em Brasília.")
+    _monitor_corpo()
+
+
+PAGINAS = {"Painel": pagina_painel, "Apresentação": pagina_apresentacao, "Monitoramento": pagina_monitor,
+           "Metodologia e desvios": pagina_metodologia}
+pagina = st.sidebar.radio("Página", list(PAGINAS))
+PAGINAS[pagina]()
