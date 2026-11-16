@@ -10,6 +10,7 @@ import streamlit as st
 
 import analysis as an
 from data_source import load_raw
+from export import build_workbook
 
 ROOT = Path(__file__).resolve().parent.parent
 st.set_page_config(page_title="Survey: IA no aprendizado de programação", layout="wide")
@@ -100,7 +101,7 @@ def pagina_painel():
             ops = [o["value"] for o in items[iid]["options"] if an.tem_opcao(validos[iid], o["value"]).any()]
         else:
             ops = [o["value"] for o in items[iid]["options"] if o["value"] in set(validos[iid].dropna())]
-        esc = st.sidebar.multiselect(items[iid]["text"], ops, format_func=lambda v, i=iid: rotulo(i, v))
+        esc = st.sidebar.multiselect(items[iid]["text"], ops, format_func=lambda v, i=iid: rotulo(i, v), key="f_" + iid)
         if esc:
             if multi:  # basta ter marcado qualquer uma das opcoes escolhidas
                 mask = pd.concat([an.tem_opcao(filtrado[iid], v) for v in esc], axis=1).any(axis=1)
@@ -210,6 +211,18 @@ def pagina_painel():
         raw = raw[[c for c in cols if c in raw]]
         st.write("CSV bruto (todas as respostas, inclusive as descartadas, sem dados pessoais).")
         st.download_button("Baixar CSV bruto", raw.to_csv(index=False).encode("utf-8"), "respostas_brutas.csv", "text/csv")
+        st.divider()
+        st.write("Planilha (.xlsx) com respostas, classificação dos descartes, escores, resultados das QPs, confiabilidade, perfil e dicionário. "
+                 "As abas de análise seguem os filtros da barra lateral; as abas Respostas e Classificação trazem tudo.")
+        filtros_txt = "; ".join(f"{items[i]['text']}: {', '.join(rotulo(i, v) for v in st.session_state.get('f_' + i, []))}"
+                                for i in PERFIL if st.session_state.get("f_" + i)) or "nenhum"
+        sint = os.environ.get("SURVEY_TABLE") == "responses_dev" or "_dev" in bruto.columns
+        try:
+            xlsx = build_workbook(bruto, todos, filtrado, q, filtros_txt, sint)
+            st.download_button("Baixar planilha (.xlsx)", xlsx, "survey_resultados.xlsx",
+                               "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        except Exception as e:  # noqa: BLE001
+            st.error(f"Não foi possível gerar a planilha: {type(e).__name__}")
 
 
 pagina = st.sidebar.radio("Página", ["Painel", "Metodologia e desvios"])

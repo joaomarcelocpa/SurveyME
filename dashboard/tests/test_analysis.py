@@ -89,3 +89,23 @@ def test_grupo_exclusivo_multipla_escolha():
 
 def test_normaliza_multipla_ordenada():
     assert an.normalize_answers({"Q9": ["duvidas", "gerar_codigo"]})["Q9"] == "duvidas|gerar_codigo"
+
+
+def test_planilha_xlsx_abas_e_sem_pessoais():
+    import io
+    import openpyxl
+    from export import build_workbook
+
+    bruto = base_df()
+    todos = an.classify(bruto, Q)
+    v = todos[todos.valida]
+    xlsx = build_workbook(bruto, todos, v, Q, "nenhum", True)
+    wb = openpyxl.load_workbook(io.BytesIO(xlsx))
+    assert wb.sheetnames == ["Leia-me", "Respostas", "Classificação", "Escores", "QPs", "Confiabilidade", "Perfil", "Dicionário"]
+    assert wb["Respostas"].max_row == len(bruto) + 1  # todas, inclusive descartadas
+    assert wb["Classificação"].max_row == len(bruto) + 1
+    assert wb["Escores"].max_row == len(v) + 1
+    cab = [c.value for c in wb["Respostas"][1]]
+    assert not {"email", "ip", "user_agent", "nome"} & set(cab)
+    assert wb["Leia-me"]["B11"].value.startswith("DADOS SINTÉTICOS")
+    assert wb["QPs"].max_row == len(Q["research_questions"]) + 1

@@ -5,3 +5,4 @@ pingouin>=0.5.5
 plotly>=5.24
 psycopg[binary]>=3.2
 pytest>=8
+openpyxl>=3.1
