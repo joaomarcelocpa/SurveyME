@@ -91,6 +91,12 @@ SURVEY_SOURCE=csv:data/seed_dev.csv .venv/bin/streamlit run app.py
 
 A exportação de CSV traz todas as respostas, com data e hora, sem dado pessoal. O campo aberto (Q20) é texto livre e deve ser revisado antes de qualquer divulgação.
 
+### Apresentação, monitoramento e backup
+
+O painel tem quatro páginas: **Painel** (análise com filtros e exportações em CSV e planilha), **Apresentação** (slides com os resultados em linguagem simples e um botão que gera um HTML que abre offline, com setas para navegar), **Monitoramento** (andamento da coleta e saúde dos dados) e **Metodologia e desvios**.
+
+O backup das respostas, a verificação contra o banco e a restauração estão em `scripts/backup.py`, `scripts/backup.sh` e `scripts/restore.py`. O passo a passo, o agendamento por hora e os cuidados com privacidade ficam em [`docs/operacao.md`](docs/operacao.md).
+
 ### Tabela de rastreabilidade
 
 ```bash
