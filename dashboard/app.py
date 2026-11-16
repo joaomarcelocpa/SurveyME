@@ -10,7 +10,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 import analysis as an
-from data_source import load_raw
+from data_source import ConfigError, load_raw
 from export import build_workbook
 import charts
 import monitor
@@ -72,7 +72,7 @@ def pagina_painel():
     try:
         bruto = carregar()
     except Exception as e:  # noqa: BLE001
-        st.error(f"Não foi possível ler os dados: {type(e).__name__}")
+        st.error(str(e) if isinstance(e, ConfigError) else f"Não foi possível ler os dados: {type(e).__name__}")
         return
     if bruto.empty:
         st.info("Ainda não há respostas.")
@@ -229,7 +229,7 @@ def pagina_apresentacao():
     try:
         bruto = carregar()
     except Exception as e:  # noqa: BLE001
-        st.error(f"Não foi possível ler os dados: {type(e).__name__}")
+        st.error(str(e) if isinstance(e, ConfigError) else f"Não foi possível ler os dados: {type(e).__name__}")
         return
     if bruto.empty:
         st.info("Ainda não há respostas.")
@@ -267,7 +267,7 @@ def _monitor_corpo():
     try:
         bruto = carregar()
     except Exception as e:  # noqa: BLE001
-        st.error(f"Não foi possível ler os dados: {type(e).__name__}")
+        st.error(str(e) if isinstance(e, ConfigError) else f"Não foi possível ler os dados: {type(e).__name__}")
         return
     if bruto.empty:
         st.info("Ainda não há respostas.")

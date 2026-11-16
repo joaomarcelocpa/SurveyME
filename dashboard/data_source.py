@@ -8,6 +8,10 @@ import pandas as pd
 
 from analysis import rows_to_df
 
+class ConfigError(Exception):
+    """Configuracao ausente ou invalida; a mensagem e segura para exibir (sem segredos)."""
+
+
 TABELAS_PERMITIDAS = {"responses", "responses_dev"}
 
 
@@ -22,7 +26,9 @@ def load_raw() -> pd.DataFrame:
     tabela = os.environ.get("SURVEY_TABLE", "responses")
     if tabela not in TABELAS_PERMITIDAS:
         raise ValueError("Tabela nao permitida")
-    url = os.environ["DATABASE_URL_RO"]
+    url = os.environ.get("DATABASE_URL_RO")
+    if not url:
+        raise ConfigError("DATABASE_URL_RO não está definida. Crie o arquivo dashboard/.env (copie de .env.example) com a string do usuário survey_ro e reinicie o painel.")
     with psycopg.connect(url) as con, con.cursor() as cur:
         cur.execute(f"select id, created_at, form_version, consent, answers from {tabela} order by created_at")
         cols = [c.name for c in cur.description]

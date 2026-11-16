@@ -61,3 +61,12 @@ def test_magnitude_de_efeito():
     assert presentation.magnitude("ρ", -0.73) == "grande"
     assert presentation.magnitude("ε²", 0.02) == "fraco"
     assert presentation.magnitude("r (bisserial por postos)", 0.05) == "desprezível"
+
+
+def test_sem_url_do_banco_a_mensagem_diz_o_que_fazer(monkeypatch):
+    import pytest
+    from data_source import ConfigError, load_raw
+    monkeypatch.delenv("DATABASE_URL_RO", raising=False)
+    monkeypatch.delenv("SURVEY_SOURCE", raising=False)
+    with pytest.raises(ConfigError, match="dashboard/.env"):
+        load_raw()
